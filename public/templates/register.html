@@ -1,0 +1,15 @@
+<div class="login-card">
+    <h1>Register</h1><br>
+    <form ng-submit="reg.submit()">
+        <input type="text" name="user" placeholder="Username" ng-model="reg.user.name" autofocus required>
+        <p>{{reg.message1}} </p>
+        <input type="password" name="pass" placeholder="Password" ng-model="reg.user.password" required>
+        <input type="email" name="mail" placeholder="Mail" ng-model="reg.user.mail" required>
+        <p>{{reg.message2}} </p>
+        <input type="submit" name="submit" class="login login-submit" value="Register" >
+    </form>
+
+    <div class="login-help">
+        <a href="login">Log in</a>
+    </div>
+</div>
