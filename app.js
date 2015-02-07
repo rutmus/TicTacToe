@@ -28,21 +28,44 @@ var User = mongoose.model('User', userSchema);
 var users = {};
 
 io.sockets.on('connection', function (socket) {
-    io.sockets.emit('this', { will: 'be received by everyone'});
 
     socket.on('message', function (data) {
         console.log('New Chat Message ', data);
-        io.sockets.emit('txt',{msg: data, nick: socket.username});
+        io.sockets.emit('chat',{msg: data, nick: socket.username});
     });
 
-    socket.on('advance', function (data) {
+    socket.on('advance', function (data, callback) {
         console.log('New move to ', data.name);
-        users[data.name].emit('game',{x: data.x, y: data.y});
+        if (data.name in users) {
+            users[data.name].emit('game', data);
+            callback(true);
+        }
+        else {
+            callback(false);
+        }
     });
 
-    socket.on('ask', function (data) {
-        console.log('New request from ', data);
-        users[data].emit('request',socket.username);
+    socket.on('quit', function (user) {
+        if (user in users) {
+            users[user].emit('surrender', socket.username + ' surrendered!');
+        }
+    });
+
+    socket.on('ask', function (user, callback) {
+        console.log('New request from ', user);
+        if (user in users) {
+            users[user].emit('request', socket.username);
+            callback(true);
+        }
+        else {
+            callback(false);
+        }
+    });
+
+    socket.on('decline', function (data) {
+        if (data.name in users) {
+            users[data.name].emit('declined', data.msg);
+        }
     });
 
     socket.on('newuser', function (data, callback) {
@@ -52,8 +75,7 @@ io.sockets.on('connection', function (socket) {
                 users[data.name] = socket;
 
                 console.log(data.name,' Is Now Connected!');
-                //io.sockets.emit('log',data.name + ' is now online');
-                //io.sockets.emit('log', data.name);
+                io.sockets.emit('log',data.name + ' is now online');
                 io.sockets.emit('usernames', Object.keys(users));
 
                 callback(true);
@@ -62,15 +84,6 @@ io.sockets.on('connection', function (socket) {
                 callback(false);
             }
         })
-
-        //socket.username = name;
-        //usernames[name] = name;
-        //socket.emit('updatechat', 'SERVER', 'you have connected');
-        //socket.broadcast.emit('updatechat', 'SERVER', name + ' has connected');
-        //io.sockets.emit('updateusers', usernames);
-
-        //console.log(name,' Is Now Connected!');
-        //io.sockets.emit('txt',name + ' is now online');
     });
 
     socket.on('exit', function (data) {
@@ -79,6 +92,7 @@ io.sockets.on('connection', function (socket) {
         delete users[socket.username];
         console.log(socket.username,' Has Been Disconnected!');
         io.sockets.emit('log',socket.username + ' is now offline');
+        io.sockets.emit('usernames', Object.keys(users));
     });
 
 });
