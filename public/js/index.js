@@ -1,4 +1,4 @@
-var app = angular.module('tic-tac-toe', ['ngRoute']);
+var app = angular.module('tic-tac-toe', ['ui.router', 'ticTacToe.login', 'TicTacToe.game', 'ticTacToe.admin'])
 
 //
 //window.onbeforeunload = function (event) {
@@ -13,118 +13,78 @@ var app = angular.module('tic-tac-toe', ['ngRoute']);
 //    return message;
 //};
 
-app.config(function($routeProvider, $httpProvider, $locationProvider) {
-    $routeProvider
-        .when('/login',
-        {
-            controller: 'loginCtrl',
-            templateUrl: 'templates/login.html',
-            controllerAs: 'login'
-        })
-        .when('/register',
-        {
-            controller: 'regCtrl',
-            templateUrl: 'templates/register.html',
-            controllerAs: 'reg'
-        })
-        //.when('/game',
-        //{
-        //    controller: 'regCtrl',
-        //    templateUrl: 'templates/register.html',
-        //    controllerAs: 'reg'
-        //})
-        .when('/main',
-        {
-            templateUrl: 'templates/main.html'
-        })
-        .otherwise(
-        {
-            controller: 'loginCtrl',
-            templateUrl: 'templates/login.html',
-            controllerAs: 'login'
+    .config(function($stateProvider, $urlRouterProvider, $locationProvider) {
+        $stateProvider
+
+            .state('login', {
+                url: '/login',
+                templateUrl: 'templates/login.html',
+                controller: 'loginCtrl as login'
+            })
+
+            .state('register',
+            {
+                url: '/register',
+                controller: 'regCtrl',
+                templateUrl: 'templates/register.html'
+            })
+
+            .state('game',
+            {
+                url: '/game',
+                controller: 'GameCtrl as game',
+                templateUrl: 'templates/game.html'
+            })
+
+            .state('admin',
+            {
+                url: '/admin',
+                controller: 'AdminCtrl as admin',
+                templateUrl: 'templates/admin.html'
+            })
+
+            .state('main',
+            {
+                url: '/main',
+                templateUrl: 'templates/main.html'
+            });
+
+        $urlRouterProvider.otherwise('/main');
+
+        $locationProvider.html5Mode({
+            enabled: true,
+            requireBase: false
         });
+    })
 
-    $locationProvider.html5Mode({
-        enabled: true,
-        requireBase: false
-    });
-});
-
-app.factory('loginService', ['$http', '$location', '$window', function ($http, $location, $window) {
-
-    return ({loginUser: loginUser, saveUser: saveUser, connectedUser: connectedUser});
-
-    var connectedUser;
-
-    var onBeforeUnloadHandler = function (event){
-
-        if (connectedUser) {
-            (event || $window.event).returnValue = message;
-            return message;
-        } else {
-            return undefined;
-        }
-
-        //var message = 'Sure you want to leave? ' + loginService.connectedUser.user;
-        //if (typeof event == 'undefined') {
-        //    event = $window.event;
-        //}
-        //if (event) {
-        //    event.returnValue = message;
-        //}
-        //return message;
-    };
-
-    if ($window.addEventListener) {
-        $window.addEventListener('beforeunload', onBeforeUnloadHandler);
-    } else {
-        $window.onbeforeunload = onBeforeUnloadHandler;
-    }
-
-    function loginUser(user, onErrorCallback) {
-        $http.post('http://localhost:8080/checkUser', user).success(successCallback).error(onErrorCallback);
-    }
-
-    function saveUser(user, onErrorCallback) {
-        $http.post('http://localhost:8080/createUser', user).success(successCallback).error(onErrorCallback);
-    }
-
-    function successCallback(user){
-        if (user){
-            connectedUser = user;
-            $location.path('/main');
-            alert(user.name + ' is ' + user.online);
-            //$http.get('http://ipinfo.io/json').success(function(data){
-            //    alert(data.country + data.city)
-            //});
-        }
-    }
-}]);
-
-app.controller('loginCtrl', ['loginService', function (loginService) {
-    var that = this;
-
-    this.submit = function () {
-        loginService.loginUser(this.user, function(err){
-            that.message = err.message;
-        });
-    };
-}])
-.controller('regCtrl', ['loginService', function (loginService) {
-    var that = this;
-
-    this.submit = function () {
-        loginService.saveUser(this.user, function(err){
-            that.message1 = '';
-            that.message2 = '';
-
-            if (err.message.indexOf("Username") > -1){
-                that.message1 = err.message;
+    .factory('$localstorage', ['$window', function($window) {
+        return {
+            set: function(key, value) {
+                $window.localStorage[key] = value;
+            },
+            get: function(key, defaultValue) {
+                return $window.localStorage[key] || defaultValue;
+            },
+            setObject: function(key, value) {
+                $window.localStorage[key] = JSON.stringify(value);
+            },
+            getObject: function(key) {
+                return JSON.parse($window.localStorage[key] || false);
+            },
+            remove: function(key) {
+                $window.localStorage.removeItem(key);
             }
+        }
+    }])
 
-            if (err.message.indexOf("Mail") > -1){
-                that.message2 = err.message;
+    .controller('MainCtrl', ['$localstorage', function($localstorage) {
+        this.isUser = function() {
+            if ($localstorage.getObject('user')) {
+                return true;
             }
-        });
-    };
-}]);
+            return false;
+        }
+    }]);
+
+
+
