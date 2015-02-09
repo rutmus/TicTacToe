@@ -4,7 +4,7 @@ angular.module('TicTacToe.game', [])
         return {
             restrict: 'E',
             scope: {
-                smallBoard: '&'
+                smallBoard: '@'
             },
             templateUrl: 'templates/miniTicTacToe.html',
             replace: true,

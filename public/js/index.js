@@ -43,6 +43,18 @@ var app = angular.module('tic-tac-toe', ['ui.router', 'ticTacToe.login', 'TicTac
                 templateUrl: 'templates/admin.html'
             })
 
+            .state('admin.userManager', {
+                url: '/manager',
+                controller: 'UserManagerCtrl as man',
+                templateUrl: 'templates/userManager.html'
+            })
+
+            .state('admin.map', {
+                url: '/map',
+                controller: 'MapCtrl as map',
+                templateUrl: 'templates/map.html'
+            })
+
             .state('main',
             {
                 url: '/main',

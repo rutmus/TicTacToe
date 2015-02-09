@@ -1,4 +1,9 @@
 <tabset vertical="true" type="navType">
-    <tab heading="Vertical 1">Vertical content 1</tab>
-    <tab heading="Vertical 2">Vertical content 2</tab>
+    <tab heading="User Manager" select="admin.changeTab('userManager')"></tab>
+    <tab heading="Map View" select="admin.changeTab('map')"></tab>
+
+    <!--<tab heading="User Manager" ui-sref="admin.userManager"></tab>-->
+    <!--<tab heading="Map View" ui-sref="admin.map"></tab>-->
+
+    <ui-view></ui-view>
 </tabset>
