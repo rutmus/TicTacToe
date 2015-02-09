@@ -42,7 +42,7 @@ angular.module('ticTacToe.login', [])
         function successCallback(user){
             if (user){
                 connectedUser = user;
-                alert(user.name + ' is ' + user.online);
+                //alert(user.name + ' is ' + user.online);
                 $localstorage.setObject('user', user);
                 if (user.admin) {
                     $state.go('admin');
@@ -50,9 +50,6 @@ angular.module('ticTacToe.login', [])
                 else {
                     $state.go('game');
                 }
-                //$http.get('http://ipinfo.io/json').success(function(data){
-                //    alert(data.country + data.city)
-                //});
             }
         }
     }])
@@ -67,7 +64,8 @@ angular.module('ticTacToe.login', [])
         };
     }])
 
-    .controller('regCtrl', ['loginService', function (loginService) {
+    .controller('regCtrl', ['loginService', '$http', function (loginService, $http) {
+        this.user = {};
         var that = this;
 
         this.submit = function () {
@@ -84,4 +82,10 @@ angular.module('ticTacToe.login', [])
                 }
             });
         };
+
+        $http.get('http://ipinfo.io/json').
+            success(function(data) {
+                console.log(data);
+                that.user.country = data.country;
+            });
     }]);

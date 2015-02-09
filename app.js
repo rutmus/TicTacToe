@@ -1,7 +1,3 @@
-/**
- * Created by רותם on 07/01/2015.
- */
-
 var express = require('express')
     , path = require('path')
     , mongoose = require('mongoose')
@@ -19,7 +15,8 @@ var userSchema = mongoose.Schema({
     name: String,
     password: String,
     mail: String,
-    online: Boolean,
+    country: String,
+    blocked: Boolean,
     admin: Boolean
 }, { collection: 'users'});
 
@@ -134,8 +131,9 @@ app.post("/createUser", function(req, res) {
                 }
                 else {
                     var newUser = User(req.body);
-                    newUser.online = true;
+                    //newUser.online = true;
                     newUser.admin = false;
+                    newUser.blocked = false;
                     newUser.save();
                     console.log(newUser.name + " has created");
                     res.json(newUser);

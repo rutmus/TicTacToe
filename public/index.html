@@ -25,9 +25,9 @@
         <section class="top-bar-section">
             <ul class="right">
                 <li ng-if="!main.isUser()"><a href="/login">Sign in</a></li>
-                <li ng-if="!main.isUser()"><a href="/register">Register</a></li>
+                <li ng-if="main.isUser()"><a href="/register">Register</a></li>
                 <li ng-if="main.isUser()"><a href="game">Game</a></li>
-                <li ng-if="main.isUser()"><a href="#">Admin</a></li>
+                <li ng-if="main.isUser()"><a href="/admin">Admin</a></li>
                 <li ng-if="main.isUser()"><a href=''>Sign out</a></li>
             </ul>
         </section>
@@ -43,6 +43,8 @@
                     <li><a href="#">Link 4</a></li>
             </ul>
         </div>
+
+
 
         <ui-view></ui-view>
 

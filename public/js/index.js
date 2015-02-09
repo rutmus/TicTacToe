@@ -25,7 +25,7 @@ var app = angular.module('tic-tac-toe', ['ui.router', 'ticTacToe.login', 'TicTac
             .state('register',
             {
                 url: '/register',
-                controller: 'regCtrl',
+                controller: 'regCtrl as reg',
                 templateUrl: 'templates/register.html'
             })
 
