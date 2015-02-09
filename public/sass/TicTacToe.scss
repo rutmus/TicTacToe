@@ -2,7 +2,7 @@
 -------------------------------------------------------------- */
 
 $size-sm:        90px;
-$size:           40px;
+$size:           140px;
 $spacing:        5px;
 
 $player-1-icon:  "\f00d";
@@ -17,7 +17,7 @@ $hover-color:    #3d4250;
 
 .tic-tac-toe {
   font-family: 'Open Sans', sans-serif;
-  height: ($size-sm + $spacing*2)*3;
+  height: 200px; //($size-sm + $spacing*2)*3;
   overflow: hidden;
   margin: 50px auto 30px auto;
   position: relative;
@@ -36,6 +36,13 @@ $hover-color:    #3d4250;
   .col {
     height: $size;
     width: $size;
+    border: 1px solid black;
+    border-radius: 3px;
+    display: inline-block;
+
+    &:hover {
+      color: $player-1-color;
+    }
   }
 
 //  input[type="radio"] {

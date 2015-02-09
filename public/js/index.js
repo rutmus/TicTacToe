@@ -1,4 +1,4 @@
-var app = angular.module('tic-tac-toe', ['ui.router', 'ticTacToe.login', 'TicTacToe.game', 'ticTacToe.admin'])
+var app = angular.module('tic-tac-toe', ['ui.router', 'ticTacToe.login', 'TicTacToe.game', 'ticTacToe.admin', 'mm.foundation'])
 
 //
 //window.onbeforeunload = function (event) {

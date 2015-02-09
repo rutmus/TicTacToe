@@ -1,1 +1,17 @@
-<mini-tic-tac-toe></mini-tic-tac-toe>
+<div class="left" style="width: 200px; background-color: darkgrey;">
+    <ul class="side-nav">
+        <li><a href="#">Link 1</a></li>
+        <li><a href="#">Link 2</a></li>
+        <li><a href="#">Link 3</a></li>
+        <li><a href="#">Link 4</a></li>
+    </ul>
+</div>
+
+<div class="tic-tac-toe">
+<div class="row" ng-repeat="row in [0,1,2]">
+    <div class="col" ng-repeat="col in [0, 1, 2]">
+        <!--<mini-tic-tac-toe smallBoard="game.board.board[0][0]"></mini-tic-tac-toe>-->
+        {{ game.board.board[0][0].board[row][col] }}
+    </div>
+</div>
+</div>

@@ -1,17 +1,5 @@
-<div class="tic-tac-toe">
-    <div class="row">
-        <div class="col" ng-model="" ng-click=""></div>
-        <div class="col" ng-model="" ng-click=""></div>
-        <div class="col" ng-model="" ng-click=""></div>
-    </div>
-    <div class="row">
-        <div class="col" ng-model="" ng-click=""></div>
-        <div class="col" ng-model="" ng-click=""></div>
-        <div class="col" ng-model="" ng-click=""></div>
-    </div>
-    <div class="row">
-        <div class="col" ng-model="" ng-click=""></div>
-        <div class="col" ng-model="" ng-click=""></div>
-        <div class="col" ng-model="" ng-click=""></div>
+<div class="row" ng-repeat="row in [0,1,2]">
+    <div class="col" ng-repeat="col in [0, 1, 2]">
+        {{ smallBoard.board[row][col] }}
     </div>
 </div>
