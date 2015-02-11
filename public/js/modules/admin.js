@@ -1,14 +1,6 @@
-angular.module('ticTacToe.admin', [])
+angular.module('TicTacToe.statistics', [])
 
-    .controller('AdminCtrl', ['$state', function ($state) {
-        $state.go('admin.userManager');
-
-        this.changeTab = function(tabName) {
-            $state.go('^.' + tabName);
-        }
-    }])
-
-    .controller('UserManagerCtrl', ['$state', function ($state) {
+    .controller('GraphsCtrl', ['$state', function ($state) {
 
     }])
 

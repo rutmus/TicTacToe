@@ -1,8 +1,8 @@
-angular.module('ticTacToe.login', [])
+angular.module('TicTacToe.users', [])
 
     .factory('loginService', ['$http', '$state', '$window', '$localstorage', function ($http, $state, $window, $localstorage) {
 
-        return ({loginUser: loginUser, saveUser: saveUser, connectedUser: connectedUser});
+        return ({loginUser: loginUser, saveUser: saveUser, connectedUser: connectedUser, getAllUsers: getAllUsers});
 
         var connectedUser;
 
@@ -39,6 +39,10 @@ angular.module('ticTacToe.login', [])
             $http.post('http://localhost:8080/createUser', user).success(successCallback).error(onErrorCallback);
         }
 
+        function getAllUsers(successCallback, onErrorCallback) {
+            $http.get('http://localhost:8080/getAllUsers').success(successCallback).error(onErrorCallback);
+        }
+
         function successCallback(user){
             if (user){
                 connectedUser = user;
@@ -52,6 +56,17 @@ angular.module('ticTacToe.login', [])
                 }
             }
         }
+    }])
+
+    .controller('UserManagerCtrl', ['loginService', function (loginService) {
+        this.users = {};
+        var that = this;
+
+        loginService.getAllUsers(function(data){
+            console.log(data);
+            that.users = data;
+        });
+
     }])
 
     .controller('loginCtrl', ['loginService', function (loginService) {

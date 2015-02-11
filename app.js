@@ -1,5 +1,6 @@
 var express = require('express')
     , path = require('path')
+    , countrynames = require('countrynames')
     , mongoose = require('mongoose')
     , bodyParser = require('body-parser')
     , app = express()
@@ -101,6 +102,13 @@ app.get("/", function(req, res) {
     res.sendFile(__dirname + "/index.html");
 });
 
+app.get("/getAllUsers", function(req, res) {
+
+    User.find({}, function (err, db_users) {
+        res.json(db_users);
+    })
+});
+
 app.post("/checkUser", function(req, res) {
     var userToCheck = User(req.body);
     User.findOne({'name' : req.body.name, 'password' : req.body.password}, function (err, user){
@@ -131,7 +139,7 @@ app.post("/createUser", function(req, res) {
                 }
                 else {
                     var newUser = User(req.body);
-                    //newUser.online = true;
+                    newUser.country = countrynames.getName(newUser.country);
                     newUser.admin = false;
                     newUser.blocked = false;
                     newUser.save();

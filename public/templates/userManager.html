@@ -1,1 +1,19 @@
-you are in the user manager
+<div class="left">
+    <div >
+        <input type="text" placeholder="Filter by username" ng-model="man.search.name">
+        <input type="text" placeholder="Filter by email" ng-model="man.search.mail">
+        <input type="text" placeholder="Filter by country" ng-model="man.search.country">
+    </div>
+
+    <div class="bottom">
+        <table>
+            <tr ng-repeat="user in man.users | filter: man.search">
+                <td>{{user.name}}</td>
+                <td>{{user.password}}</td>
+                <td>{{user.mail}}</td>
+                <td>{{user.country}}</td>
+                <td>{{user.blocked}}</td>
+            </tr>
+        </table>
+    </div>
+</div>

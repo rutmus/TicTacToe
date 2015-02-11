@@ -1,4 +1,4 @@
-var app = angular.module('tic-tac-toe', ['ui.router', 'ticTacToe.login', 'TicTacToe.game', 'ticTacToe.admin', 'mm.foundation'])
+var app = angular.module('tic-tac-toe', ['ui.router', 'TicTacToe.users', 'TicTacToe.game', 'TicTacToe.statistics', 'mm.foundation'])
 
 //
 //window.onbeforeunload = function (event) {
@@ -86,6 +86,14 @@ var app = angular.module('tic-tac-toe', ['ui.router', 'ticTacToe.login', 'TicTac
             remove: function(key) {
                 $window.localStorage.removeItem(key);
             }
+        }
+    }])
+
+    .controller('AdminCtrl', ['$state', function ($state) {
+        //$state.go('admin.userManager');
+
+        this.changeTab = function(tabName) {
+            $state.go(tabName);
         }
     }])
 
