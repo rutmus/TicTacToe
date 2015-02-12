@@ -109,6 +109,20 @@ app.get("/getAllUsers", function(req, res) {
     })
 });
 
+app.get("/getUsersPerCountry", function(req, res) {
+
+    User.aggregate(
+        [
+            { $group : { _id : "$country", count: { $sum: 1 } } }
+        ], function (err, result) {
+            if (err) {
+                console.log(err);
+            }
+            console.log(result);
+            res.json(result);
+        });
+});
+
 app.post("/checkUser", function(req, res) {
     var userToCheck = User(req.body);
     User.findOne({'name' : req.body.name, 'password' : req.body.password}, function (err, user){

@@ -51,7 +51,7 @@ var app = angular.module('tic-tac-toe', ['ui.router', 'TicTacToe.users', 'TicTac
 
             .state('admin.map', {
                 url: '/map',
-                controller: 'MapCtrl as map',
+                controller: 'MapCtrl as mapC',
                 templateUrl: 'templates/map.html'
             })
 

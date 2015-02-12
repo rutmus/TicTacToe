@@ -1,1 +1,6 @@
 imagine you see a map
+<ui-gmap-google-map center='mapC.map.center' zoom='mapC.map.zoom'>
+    <ui-gmap-marker ng-repeat="loc in mapC.locations" coords='loc.coords' idkey='loc.id' options="loc.options">
+
+    </ui-gmap-marker>
+</ui-gmap-google-map>
