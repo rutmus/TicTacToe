@@ -18,7 +18,8 @@ var userSchema = mongoose.Schema({
     mail: String,
     country: String,
     blocked: Boolean,
-    admin: Boolean
+    admin: Boolean,
+    createDate: Date
 }, { collection: 'users'});
 
 var User = mongoose.model('User', userSchema);
@@ -123,6 +124,31 @@ app.get("/getUsersPerCountry", function(req, res) {
         });
 });
 
+app.get("/getUsersPerMonth", function(req, res) {
+
+    User.aggregate(
+        [
+            { $group : {
+                _id : { year: { $year : "$createDate" }, month: { $month : "$createDate" }},
+                count : { $sum : 1 }}
+            },
+            { $group : {
+                _id : { year: "$_id.year", month: "$_id.month" },
+                dailyusage: { $sum : "$count" }}
+            },
+            { $group : {
+                _id : "$_id.year",
+                monthly: { $push: { month: "$_id.month", UserRegistered: "$dailyusage" }}}
+            },
+        ], function (err, result) {
+            if (err) {
+                console.log(err);
+            }
+            console.log(result);
+            res.json(result);
+        });
+});
+
 app.post("/checkUser", function(req, res) {
     var userToCheck = User(req.body);
     User.findOne({'name' : req.body.name, 'password' : req.body.password}, function (err, user){
@@ -156,6 +182,7 @@ app.post("/createUser", function(req, res) {
                     newUser.country = countrynames.getName(newUser.country);
                     newUser.admin = false;
                     newUser.blocked = false;
+                    newUser.createDate = Date.now();
                     newUser.save();
                     console.log(newUser.name + " has created");
                     res.json(newUser);

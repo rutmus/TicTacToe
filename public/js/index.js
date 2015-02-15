@@ -55,6 +55,12 @@ var app = angular.module('tic-tac-toe', ['ui.router', 'TicTacToe.users', 'TicTac
                 templateUrl: 'templates/map.html'
             })
 
+            .state('admin.graph', {
+                url: '/graph',
+                controller: 'GraphsCtrl as gra',
+                templateUrl: 'templates/graph.html'
+            })
+
             .state('main',
             {
                 url: '/main',
