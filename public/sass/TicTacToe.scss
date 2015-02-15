@@ -21,12 +21,13 @@ $hover-color:    #3d4250;
   overflow: hidden;
   margin: 50px auto 30px auto;
   position: relative;
-  width: ($size-sm + $spacing*2)*3;
+  width: 100%;
+  text-align: center;
   display: inline-block;
 
   @media(min-width: 450px) {
     height: ($size + $spacing*2)*3;
-    width: ($size + $spacing*2)*3;
+    width: 100%;
   }
 
   .row {
@@ -34,20 +35,44 @@ $hover-color:    #3d4250;
   }
 
   .col {
-    height: $size;
-    width: $size;
+    height: $size + 5;
+    width: $size + 5;
     border: 1px solid black;
     border-radius: 3px;
     display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+
+  }
+
+  .mini-row {
+
+    vertical-align: middle;
+  }
+
+  .mini-col {
+    height: $size / 3;
+    width: $size / 3;
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid black;
 
     &:hover {
       color: $player-1-color;
     }
   }
 
-//  input[type="radio"] {
-//    // Hide radio buttons
-//    display: none;
+  input[type="radio"] {
+    // Hide radio buttons
+    display: none;
+
+    // Put the label above the rest, when checked
+    &:checked + label {
+      cursor: default;
+      z-index: 10 !important;
+    }
+  }
 //
 //    // Put the label above the rest, when checked
 //    &:checked + label {

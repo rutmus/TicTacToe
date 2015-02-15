@@ -1,4 +1,5 @@
-<div class="left" style="width: 200px; background-color: darkgrey;">
+<div class="left" style="width: 200px; background-color: darkgrey; position: fixed;
+height: 100%">
     <ul class="side-nav">
         <li><a href="#">Link 1</a></li>
         <li><a href="#">Link 2</a></li>
@@ -8,10 +9,40 @@
 </div>
 
 <div class="tic-tac-toe">
-<div class="row" ng-repeat="row in [0,1,2]">
-    <div class="col" ng-repeat="col in [0, 1, 2]">
-        <!--<mini-tic-tac-toe smallBoard="game.board.board[0][0]"></mini-tic-tac-toe>-->
-        {{ game.board.board[0][0].board[row][col] }}
+
+    <div class="row">
+        <div class="col">
+            <mini-tic-tac-toe mini-board="game.board.board[0][0].board"></mini-tic-tac-toe>
+        </div>
+        <div class="col">
+            <mini-tic-tac-toe mini-board="game.board.board[0][1].board"></mini-tic-tac-toe>
+        </div>
+        <div class="col">
+            <mini-tic-tac-toe mini-board="game.board.board[0][2].board"></mini-tic-tac-toe>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <mini-tic-tac-toe mini-board="game.board.board[1][0].board"></mini-tic-tac-toe>
+        </div>
+        <div class="col">
+            <mini-tic-tac-toe mini-board="game.board.board[1][1].board"></mini-tic-tac-toe>
+        </div>
+        <div class="col">
+            <mini-tic-tac-toe mini-board="game.board.board[1][2].board"></mini-tic-tac-toe>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <mini-tic-tac-toe mini-board="game.board.board[2][0].board"></mini-tic-tac-toe>
+        </div>
+        <div class="col">
+            <mini-tic-tac-toe mini-board="game.board.board[2][1].board"></mini-tic-tac-toe>
+        </div>
+        <div class="col">
+            <mini-tic-tac-toe mini-board="game.board.board[2][2].board"></mini-tic-tac-toe>
+        </div>
     </div>
 </div>
-</div>
+
+

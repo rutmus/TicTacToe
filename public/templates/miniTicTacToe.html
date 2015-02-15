@@ -1,5 +1,5 @@
-<div class="row" ng-repeat="row in [0,1,2]">
-    <div class="col" ng-repeat="col in [0, 1, 2]">
-        {{ smallBoard.board[row][col] }}
+<div class="mini-row" ng-repeat="row in miniBoard">
+    <div class="mini-col" ng-repeat="cell in row" ng-click="game.pick(cell)">
+        {{ cell.value }}
     </div>
 </div>

@@ -9,25 +9,50 @@
   overflow: hidden;
   margin: 50px auto 30px auto;
   position: relative;
-  width: 300px;
+  width: 100%;
+  text-align: center;
   display: inline-block;
 }
 @media (min-width: 450px) {
   /* line 18, ../sass/TicTacToe.scss */
   .tic-tac-toe {
     height: 450px;
-    width: 450px;
+    width: 100%;
   }
 }
-/* line 36, ../sass/TicTacToe.scss */
+/* line 37, ../sass/TicTacToe.scss */
 .tic-tac-toe .col {
-  height: 140px;
-  width: 140px;
+  height: 145px;
+  width: 145px;
   border: 1px solid black;
   border-radius: 3px;
   display: inline-block;
+  text-align: center;
+  vertical-align: middle;
 }
-/* line 43, ../sass/TicTacToe.scss */
-.tic-tac-toe .col:hover {
+/* line 48, ../sass/TicTacToe.scss */
+.tic-tac-toe .mini-row {
+  vertical-align: middle;
+}
+/* line 53, ../sass/TicTacToe.scss */
+.tic-tac-toe .mini-col {
+  height: 46.66667px;
+  width: 46.66667px;
+  display: inline-block;
+  text-align: center;
+  vertical-align: middle;
+  border: 1px solid black;
+}
+/* line 61, ../sass/TicTacToe.scss */
+.tic-tac-toe .mini-col:hover {
   color: #dc685a;
+}
+/* line 66, ../sass/TicTacToe.scss */
+.tic-tac-toe input[type="radio"] {
+  display: none;
+}
+/* line 71, ../sass/TicTacToe.scss */
+.tic-tac-toe input[type="radio"]:checked + label {
+  cursor: default;
+  z-index: 10 !important;
 }
