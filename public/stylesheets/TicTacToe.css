@@ -9,14 +9,13 @@
   overflow: hidden;
   margin: 30px auto;
   position: relative;
-  width: 80%;
   text-align: center;
   display: inline-block;
 }
 /* line 37, ../sass/TicTacToe.scss */
 .tic-tac-toe .col {
-  height: 182px;
-  width: 182px;
+  height: 92px;
+  width: 92px;
   border: 1px solid black;
   border-radius: 3px;
   display: inline-block;
@@ -24,58 +23,79 @@
   vertical-align: middle;
   margin: 2px 1px 2px;
 }
-@media (min-width: 1100px) {
+@media (min-width: 1015px) {
+  /* line 37, ../sass/TicTacToe.scss */
+  .tic-tac-toe .col {
+    height: 182px;
+    width: 182px;
+  }
+}
+@media (min-width: 1350px) {
   /* line 37, ../sass/TicTacToe.scss */
   .tic-tac-toe .col {
     height: 272px;
     width: 272px;
   }
 }
-/* line 53, ../sass/TicTacToe.scss */
+/* line 58, ../sass/TicTacToe.scss */
 .tic-tac-toe .boardActive {
-  height: 184px;
-  width: 184px;
+  height: 94px;
+  width: 94px;
   border: 2px solid #00AA00;
   margin: 1px 0 1px;
 }
-@media (min-width: 1100px) {
-  /* line 53, ../sass/TicTacToe.scss */
+@media (min-width: 1015px) {
+  /* line 58, ../sass/TicTacToe.scss */
+  .tic-tac-toe .boardActive {
+    height: 184px;
+    width: 184px;
+  }
+}
+@media (min-width: 1350px) {
+  /* line 58, ../sass/TicTacToe.scss */
   .tic-tac-toe .boardActive {
     height: 274px;
     width: 274px;
   }
 }
-/* line 68, ../sass/TicTacToe.scss */
+/* line 78, ../sass/TicTacToe.scss */
 .tic-tac-toe .mini-col {
-  height: 45px;
-  width: 45px;
+  height: 30px;
+  width: 30px;
   display: inline-block;
   text-align: center;
   vertical-align: middle;
 }
-@media (min-width: 1100px) {
-  /* line 68, ../sass/TicTacToe.scss */
+@media (min-width: 1015px) {
+  /* line 78, ../sass/TicTacToe.scss */
+  .tic-tac-toe .mini-col {
+    height: 60px;
+    width: 60px;
+  }
+}
+@media (min-width: 1350px) {
+  /* line 78, ../sass/TicTacToe.scss */
   .tic-tac-toe .mini-col {
     height: 90px;
     width: 90px;
   }
 }
-/* line 80, ../sass/TicTacToe.scss */
+/* line 95, ../sass/TicTacToe.scss */
 .tic-tac-toe .mini-col:hover {
   cursor: pointer;
   background-color: #dc685a;
 }
-/* line 97, ../sass/TicTacToe.scss */
+/* line 112, ../sass/TicTacToe.scss */
 .tic-tac-toe .cell-pick-x {
   cursor: auto;
   background-color: #dc685a;
 }
-/* line 102, ../sass/TicTacToe.scss */
+/* line 117, ../sass/TicTacToe.scss */
 .tic-tac-toe .cell-pick-y {
   cursor: auto;
   background-color: #ecaf4f;
 }
-/* line 107, ../sass/TicTacToe.scss */
+/* line 122, ../sass/TicTacToe.scss */
 .tic-tac-toe .cell-pick-x:after {
   font-family: "FontAwesome";
   margin-top: -22.5px;
@@ -86,7 +106,7 @@
   width: 100%;
   vertical-align: -50%;
 }
-/* line 118, ../sass/TicTacToe.scss */
+/* line 133, ../sass/TicTacToe.scss */
 .tic-tac-toe .cell-pick-y:after {
   font-family: "FontAwesome";
   margin-top: -22.5px;
@@ -96,43 +116,43 @@
   top: 50%;
   width: 100%;
 }
-/* line 133, ../sass/TicTacToe.scss */
+/* line 148, ../sass/TicTacToe.scss */
 .tic-tac-toe .cell-0-0 {
   border-right: 1px solid black;
   border-bottom: 1px solid black;
 }
-/* line 138, ../sass/TicTacToe.scss */
+/* line 153, ../sass/TicTacToe.scss */
 .tic-tac-toe .cell-0-1 {
   border-right: 1px solid black;
   border-bottom: 1px solid black;
 }
-/* line 143, ../sass/TicTacToe.scss */
+/* line 158, ../sass/TicTacToe.scss */
 .tic-tac-toe .cell-0-2 {
   border-bottom: 1px solid black;
 }
-/* line 147, ../sass/TicTacToe.scss */
+/* line 162, ../sass/TicTacToe.scss */
 .tic-tac-toe .cell-1-0 {
   border-right: 1px solid black;
   border-bottom: 1px solid black;
 }
-/* line 152, ../sass/TicTacToe.scss */
+/* line 167, ../sass/TicTacToe.scss */
 .tic-tac-toe .cell-1-1 {
   border-right: 1px solid black;
   border-bottom: 1px solid black;
 }
-/* line 157, ../sass/TicTacToe.scss */
+/* line 172, ../sass/TicTacToe.scss */
 .tic-tac-toe .cell-1-2 {
   border-bottom: 1px solid black;
 }
-/* line 161, ../sass/TicTacToe.scss */
+/* line 176, ../sass/TicTacToe.scss */
 .tic-tac-toe .cell-2-0 {
   border-right: 1px solid black;
 }
-/* line 165, ../sass/TicTacToe.scss */
+/* line 180, ../sass/TicTacToe.scss */
 .tic-tac-toe .cell-2-1 {
   border-right: 1px solid black;
 }
-/* line 174, ../sass/TicTacToe.scss */
+/* line 189, ../sass/TicTacToe.scss */
 .tic-tac-toe input[type="radio"] {
   display: none;
   height: 30px;
@@ -141,20 +161,20 @@
   vertical-align: middle;
   border: 1px solid black;
 }
-/* line 185, ../sass/TicTacToe.scss */
+/* line 200, ../sass/TicTacToe.scss */
 .tic-tac-toe input[type="radio"]:checked + label {
   cursor: default;
   z-index: 10 !important;
 }
-/* line 192, ../sass/TicTacToe.scss */
+/* line 207, ../sass/TicTacToe.scss */
 .tic-tac-toe input[type="radio"] label:after {
   content: #dc685a;
 }
-/* line 203, ../sass/TicTacToe.scss */
+/* line 218, ../sass/TicTacToe.scss */
 .tic-tac-toe input[type="radio"]:checked + label:after {
   opacity: 1;
 }
-/* line 216, ../sass/TicTacToe.scss */
+/* line 231, ../sass/TicTacToe.scss */
 .tic-tac-toe label {
   background-color: #78bec5;
   border-radius: 14px;
@@ -171,21 +191,21 @@
   transition: background-color 0.3s;
 }
 @media (min-width: 450px) {
-  /* line 216, ../sass/TicTacToe.scss */
+  /* line 231, ../sass/TicTacToe.scss */
   .tic-tac-toe label {
     height: 300px;
     width: 100%;
   }
 }
-/* line 234, ../sass/TicTacToe.scss */
+/* line 249, ../sass/TicTacToe.scss */
 .tic-tac-toe label:hover {
   background-color: #3d4250;
 }
-/* line 237, ../sass/TicTacToe.scss */
+/* line 252, ../sass/TicTacToe.scss */
 .tic-tac-toe label:hover:after {
   opacity: .4;
 }
-/* line 243, ../sass/TicTacToe.scss */
+/* line 258, ../sass/TicTacToe.scss */
 .tic-tac-toe label:after {
   left: 0;
   font-family: "FontAwesome";
@@ -199,19 +219,19 @@
   width: 100%;
 }
 @media (min-width: 450px) {
-  /* line 243, ../sass/TicTacToe.scss */
+  /* line 258, ../sass/TicTacToe.scss */
   .tic-tac-toe label:after {
     font-size: 45px;
     margin-top: -22.5px;
   }
 }
 
-/* line 264, ../sass/TicTacToe.scss */
+/* line 279, ../sass/TicTacToe.scss */
 .my-side-bar {
   padding: 0;
 }
 
-/* line 270, ../sass/TicTacToe.scss */
+/* line 285, ../sass/TicTacToe.scss */
 .user-list li {
   height: 45px;
   padding: 10px;
@@ -219,7 +239,7 @@
   font-family: tahoma, sans-serif;
   font-size: 16px;
 }
-/* line 277, ../sass/TicTacToe.scss */
+/* line 292, ../sass/TicTacToe.scss */
 .user-list li:hover {
   cursor: pointer;
   background-color: #555555;

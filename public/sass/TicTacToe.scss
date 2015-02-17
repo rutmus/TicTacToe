@@ -24,7 +24,7 @@ $border-style: 1px solid black;
   overflow: hidden;
   margin: 30px auto;
   position: relative;
-  width: 80%;
+//  width: 80%;
   text-align: center;
   display: inline-block;
 
@@ -35,8 +35,8 @@ $border-style: 1px solid black;
   }
 
   .col {
-    height: ($size * 2) + 2;
-    width: ($size * 2) + 2;
+    height: $size + 2;
+    width: $size + 2;
     border: 1px solid black;
     border-radius: 3px;
     display: inline-block;
@@ -44,19 +44,29 @@ $border-style: 1px solid black;
     vertical-align: middle;
     margin: 2px 1px 2px;
 
-    @media(min-width: 1100px) {
+    @media(min-width: 1015px) {
+      height: ($size * 2) + 2;
+      width: ($size * 2) + 2;
+    }
+
+    @media(min-width: 1350px) {
       height: ($size * 3) + 2;
       width: ($size * 3) + 2;
     }
   }
 
   .boardActive {
-    height: ($size * 2) + 4;
-    width: ($size * 2) + 4;
+    height: $size + 4;
+    width: $size + 4;
     border: 2px solid #00AA00;
     margin: 1px 0 1px;
 
-    @media(min-width: 1100px) {
+    @media(min-width: 1015px) {
+      height: ($size * 2) + 4;
+      width: ($size * 2) + 4;
+    }
+
+    @media(min-width: 1350px) {
       height: ($size * 3) + 4;
       width: ($size * 3) + 4;
     }
@@ -66,13 +76,18 @@ $border-style: 1px solid black;
   }
 
   .mini-col {
-    height: $size / 2;
-    width: $size / 2;
+    height: $size / 3;
+    width: $size / 3;
     display: inline-block;
     text-align: center;
     vertical-align: middle;
 
-    @media(min-width: 1100px) {
+    @media(min-width: 1015px) {
+      height: $size / 1.5;
+      width: $size / 1.5;
+    }
+
+    @media(min-width: 1350px) {
       height: $size;
       width: $size;
     }

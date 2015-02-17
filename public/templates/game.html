@@ -1,12 +1,11 @@
-<div class="small-6 large-2 columns my-side-bar" style="background-color: darkgrey;
-height: 100%">
+<div class="small-3 large-2 columns my-side-bar" style="background-color: darkgrey; height: 100%">
     <ul class="side-nav user-list">
         <li ng-repeat="user in game.users" ng-click="game.sendRequest(user)">{{ user }}</li>
     </ul>
 </div>
 
 
-<div class="tic-tac-toe small-6 large-8 columns">
+<div class="tic-tac-toe small-7 large-8 columns">
 
     <div class="row">
         <div class="col" ng-class="{ boardActive: game.board.board[0][0].isAlowed }">
@@ -42,11 +41,15 @@ height: 100%">
         </div>
     </div>
 
-    <div ng-show="game.askingUser">
-        <alert type="alert.type">you have invite from {{ invite }}</alert>
-        <button class='button' ng-click="game.acceptInvite()">zorem</button>
-    </div>
 
+</div>
+
+
+<div ng-show="game.askingUser" class="small-2 large-2 columns panel callout radius">
+    <h5>You got an invitation from {{ game.askingUser }}</h5>
+
+    <p>Please play fair, without kicking the nuts</p>
+    <button class='button' ng-click="game.acceptInvite()">Let's Play</button>
 </div>
 
 
