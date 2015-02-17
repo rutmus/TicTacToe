@@ -22,7 +22,8 @@
                     <td>{{user.password}}</td>
                     <td>{{user.mail}}</td>
                     <td>{{user.country}}</td>
-                    <td>{{user.blocked}}</td>
+                    <!--<td>{{user.blocked}}</td>-->
+                    <td><input id="checkbox1" type="checkbox" ng-model="user.blocked" ng-change="man.blockUser(user)"></td>
                 </tr>
             </tbody>
         </table>

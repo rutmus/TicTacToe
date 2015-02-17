@@ -103,7 +103,10 @@ var app = angular.module('tic-tac-toe', ['ui.router', 'TicTacToe.users', 'TicTac
         }
     }])
 
-    .controller('MainCtrl', ['$localstorage', function($localstorage) {
+    .controller('MainCtrl', ['$localstorage', '$sce', function($localstorage, $sce) {
+        this.trustedUrl = $sce.trustAsResourceUrl("www.youtube.com/watch?v=37PC0bGMiTI");
+        console.log(this.trustedUrl );
+
         this.isUser = function() {
             if ($localstorage.getObject('user')) {
                 return true;

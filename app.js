@@ -68,21 +68,26 @@ io.sockets.on('connection', function (socket) {
     });
 
     socket.on('newuser', function (data, callback) {
-        User.findOne(data, function (err, user){
-            if (user) {
-                socket.username = data.name;
-                users[data.name] = socket;
+        if (data.name in users) {
+            callback(false);
+        }
+        else {
+            User.findOne(data, function (err, user) {
+                if (user) {
+                    socket.username = data.name;
+                    users[data.name] = socket;
 
-                console.log(data.name,' Is Now Connected!');
-                io.sockets.emit('log',data.name + ' is now online');
-                io.sockets.emit('usernames', Object.keys(users));
+                    console.log(data.name, ' Is Now Connected!');
+                    io.sockets.emit('log', data.name + ' is now online');
+                    io.sockets.emit('usernames', Object.keys(users));
 
-                callback(true);
-            }
-            else {
-                callback(false);
-            }
-        })
+                    callback(true);
+                }
+                else {
+                    callback(false);
+                }
+            })
+        }
     });
 
     socket.on('exit', function (data) {

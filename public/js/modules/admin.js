@@ -137,7 +137,7 @@ angular.module('TicTacToe.statistics', ['uiGmapgoogle-maps'])
     }])
 
     .controller('MapCtrl', ['dataService', function (dataService ) {
-        this.map = {center: {latitude: 40.1451, longitude: -99.6680 }, zoom: 2 };
+        this.map = {center: {latitude: 40.1451, longitude: -29.6680 }, zoom: 3 };
 
         this.locations = [];
         var that = this;
@@ -148,7 +148,6 @@ angular.module('TicTacToe.statistics', ['uiGmapgoogle-maps'])
             function pushInfo(country, cnt, id){
                 geocoder.geocode({'address': country}, function (results, status) {
                     if (status == google.maps.GeocoderStatus.OK) {
-                        console.log(results[0]);
                         var info = {
                             id: id,
                             coords: {

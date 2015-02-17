@@ -2,34 +2,34 @@ angular.module('TicTacToe.users', [])
 
     .factory('loginService', ['$http', '$state', '$window', '$localstorage', function ($http, $state, $window, $localstorage) {
 
+        var connectedUser = {};
+
         return ({loginUser: loginUser, saveUser: saveUser, connectedUser: connectedUser, getAllUsers: getAllUsers});
 
-        var connectedUser;
-
-        var onBeforeUnloadHandler = function (event){
-
-            if (connectedUser) {
-                (event || $window.event).returnValue = message;
-                return message;
-            } else {
-                return undefined;
-            }
-
-            //var message = 'Sure you want to leave? ' + loginService.connectedUser.user;
-            //if (typeof event == 'undefined') {
-            //    event = $window.event;
-            //}
-            //if (event) {
-            //    event.returnValue = message;
-            //}
-            //return message;
-        };
-
-        if ($window.addEventListener) {
-            $window.addEventListener('beforeunload', onBeforeUnloadHandler);
-        } else {
-            $window.onbeforeunload = onBeforeUnloadHandler;
-        }
+        //var onBeforeUnloadHandler = function (event){
+        //
+        //    if (connectedUser) {
+        //        (event || $window.event).returnValue = message;
+        //        return message;
+        //    } else {
+        //        return undefined;
+        //    }
+        //
+        //    //var message = 'Sure you want to leave? ' + loginService.connectedUser.user;
+        //    //if (typeof event == 'undefined') {
+        //    //    event = $window.event;
+        //    //}
+        //    //if (event) {
+        //    //    event.returnValue = message;
+        //    //}
+        //    //return message;
+        //};
+        //
+        //if ($window.addEventListener) {
+        //    $window.addEventListener('beforeunload', onBeforeUnloadHandler);
+        //} else {
+        //    $window.onbeforeunload = onBeforeUnloadHandler;
+        //}
 
         function loginUser(user, onErrorCallback) {
             $http.post('http://localhost:8080/checkUser', user).success(successCallback).error(onErrorCallback);
@@ -45,7 +45,7 @@ angular.module('TicTacToe.users', [])
 
         function successCallback(user){
             if (user){
-                connectedUser = user;
+                connectedUser.user = user;
                 //alert(user.name + ' is ' + user.online);
                 $localstorage.setObject('user', user);
                 if (user.admin) {
@@ -60,6 +60,11 @@ angular.module('TicTacToe.users', [])
 
     .controller('UserManagerCtrl', ['loginService', function (loginService) {
         this.users = {};
+
+        this.blockUser = function(user){
+            console.log(user);
+        };
+
         var that = this;
 
         loginService.getAllUsers(function(data){

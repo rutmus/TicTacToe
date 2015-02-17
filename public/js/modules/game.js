@@ -25,8 +25,91 @@ angular.module('TicTacToe.game', [])
         }
     })
 
-    .controller('GameCtrl', ['GameService', function (GameService) {
+    .controller('GameCtrl', ['$scope', 'GameService','$localstorage', function ($scope, GameService, $localstorage) {
+        var socket = io.connect('http://localhost:8080');
+
+        var connected = $localstorage.getObject('user');
+        console.log(connected);
+
+        $scope.$on('$destroy', function() {
+            socket.emit('exit', connected.name);
+        });
+
+        this.users = [];
+        this.waitingToResponse = false;
+        this.inGame = false;
+        this.requestAccapted = false;
+        this.invitedUser = "";
+        this.askingUser = "";
+
         var game = this;
+
+        this.sendRequest = function (to) {
+            game.invitedUser = to;
+
+            socket.emit('ask', to, function(result, error){
+                game.waitingToResponse = result;
+            });
+        };
+
+        this.declineRequest = function (to) {
+            game.askingUser = "";
+            socket.emit('decline', {name: to, msg: connected.name + " declined your request"});
+        };
+
+        socket.on('usernames', function(data) {
+            console.log("users:" + data);
+            game.users = data;
+        });
+
+        socket.on('declined', function(data) {
+            game.waitingToResponse = false;
+
+            // inform the user he was declined
+            alert(data);
+        });
+
+        socket.on('request', function(data) {
+            game.askingUser = data;
+
+            if (!game.waitingToResponse && !game.inGame){
+                // show message to the user allowing him to join the inviter
+            }
+            else if (game.waitingToResponse && game.requestAccapted){
+                game.waitingToResponse = false;
+                game.requestAccapted = false;
+
+                game.inGame = true;
+                // start game with x - allow all boards
+            }
+            else if (game.waitingToResponse && connected.name == game.invitedUser) {
+                //send 3rd request
+                socket.emit('ask', game.askingUser, function(result, error){
+                    if (result){
+                        game.inGame = true;
+                        game.waitingToResponse = false;
+                        //start game with o
+                    }
+                });
+            }
+            else {
+                //send decline to the asking
+                socket.emit('decline', {name: game.askingUser, msg: " is already in a game"});
+            }
+        });
+
+        socket.on('game', function(data) {
+            // getting the other user clicked data and send it to pick function
+        });
+
+        socket.emit('newuser', connected, function(result, error){
+            console.log(result);
+
+            if (!result){
+                // tell the user he wasn't able to connect
+                alert("cant connect")
+            }
+        });
 
         game.player = 'x';
 
