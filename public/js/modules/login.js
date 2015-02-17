@@ -6,6 +6,7 @@ angular.module('TicTacToe.users', [])
 
         return ({loginUser: loginUser, saveUser: saveUser, connectedUser: connectedUser, getAllUsers: getAllUsers});
 
+
         //var onBeforeUnloadHandler = function (event){
         //
         //    if (connectedUser) {

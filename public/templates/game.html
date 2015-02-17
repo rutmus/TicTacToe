@@ -1,48 +1,54 @@
-<div class="left" style="width: 200px; background-color: darkgrey; position: fixed;
+<div class="small-6 large-2 columns my-side-bar" style="background-color: darkgrey;
 height: 100%">
-    <ul class="side-nav">
-        <li><a href="#">Link 1</a></li>
-        <li><a href="#">Link 2</a></li>
-        <li><a href="#">Link 3</a></li>
-        <li><a href="#">Link 4</a></li>
+    <ul class="side-nav user-list">
+        <li ng-repeat="user in game.users" ng-click="game.sendRequest(user)">{{ user }}</li>
     </ul>
 </div>
 
-<div class="tic-tac-toe">
+
+<div class="tic-tac-toe small-6 large-8 columns">
 
     <div class="row">
-        <div class="col">
+        <div class="col" ng-class="{ boardActive: game.board.board[0][0].isAlowed }">
             <mini-tic-tac-toe mini-board="game.board.board[0][0].board"></mini-tic-tac-toe>
         </div>
-        <div class="col">
+        <div class="col" ng-class="{ boardActive: game.board.board[0][1].isAlowed }">
             <mini-tic-tac-toe mini-board="game.board.board[0][1].board"></mini-tic-tac-toe>
         </div>
-        <div class="col">
+        <div class="col" ng-class="{ boardActive: game.board.board[0][2].isAlowed }">
             <mini-tic-tac-toe mini-board="game.board.board[0][2].board"></mini-tic-tac-toe>
         </div>
     </div>
     <div class="row">
-        <div class="col">
+        <div class="col" ng-class="{ boardActive: game.board.board[1][0].isAlowed }">
             <mini-tic-tac-toe mini-board="game.board.board[1][0].board"></mini-tic-tac-toe>
         </div>
-        <div class="col">
+        <div class="col" ng-class="{ boardActive: game.board.board[1][1].isAlowed }">
             <mini-tic-tac-toe mini-board="game.board.board[1][1].board"></mini-tic-tac-toe>
         </div>
-        <div class="col">
+        <div class="col" ng-class="{ boardActive: game.board.board[1][2].isAlowed }">
             <mini-tic-tac-toe mini-board="game.board.board[1][2].board"></mini-tic-tac-toe>
         </div>
     </div>
     <div class="row">
-        <div class="col">
+        <div class="col" ng-class="{ boardActive: game.board.board[2][0].isAlowed }">
             <mini-tic-tac-toe mini-board="game.board.board[2][0].board"></mini-tic-tac-toe>
         </div>
-        <div class="col">
+        <div class="col" ng-class="{ boardActive: game.board.board[2][1].isAlowed }">
             <mini-tic-tac-toe mini-board="game.board.board[2][1].board"></mini-tic-tac-toe>
         </div>
-        <div class="col">
+        <div class="col" ng-class="{ boardActive: game.board.board[2][2].isAlowed }">
             <mini-tic-tac-toe mini-board="game.board.board[2][2].board"></mini-tic-tac-toe>
         </div>
     </div>
+
+    <div ng-show="game.askingUser">
+        <alert type="alert.type">you have invite from {{ invite }}</alert>
+        <button class='button' ng-click="game.acceptInvite()">zorem</button>
+    </div>
+
 </div>
+
+
 
 
