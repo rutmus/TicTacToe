@@ -87,8 +87,16 @@ angular.module('TicTacToe.game', [])
         socket.on('declined', function (data) {
             game.waitingToResponse = false;
 
-            // inform the user he was declined
-            alert(data);
+            if (game.invitedUser === game.opponent) {
+                game.opponent = "";
+                game.inGame = false;
+
+                // inform he was declined and close his pop
+            }
+            else{
+                // inform the user he was declined
+                alert(data);
+            }
         });
 
         this.acceptInvite = function () {
@@ -101,6 +109,14 @@ angular.module('TicTacToe.game', [])
         };
 
         socket.on('request', function (data) {
+
+            if (game.board.winner !== undefined && game.opponent == data){
+                // light his button
+
+                game.askingUser = data;
+
+                return;
+            }
 
             if (!game.waitingToResponse && !game.inGame) {
                 game.askingUser = data;
@@ -232,8 +248,24 @@ angular.module('TicTacToe.game', [])
 
             modalInstance.result.then(function (selectedItem) {
                 alert(selectedItem);
+
+                if (game.askingUser === game.opponent){
+                    game.acceptInvite();
+                }
+                else {
+                    game.sendRequest(game.opponent);
+                }
+
             }, function () {
                 console.log('return');
+
+                if (game.askingUser === game.opponent) {
+                    // decline
+                    game.declineRequest(game.opponent);
+                }
+
+                game.opponent = "";
+                game.inGame = false;
             });
         };
     }])
