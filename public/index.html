@@ -30,9 +30,10 @@
             <li ><a href="/register">Register</a></li>
             <li ng-if="main.isUser()"><a ui-sref="game">Game</a></li>
             <li ng-if="main.isUser()"><a ui-sref="admin.userManager">Admin</a></li>
+            <li><a href="" ng-click="main.stam()">asdad</a></li>
             <li ng-if="main.isUser()" class="has-dropdown">
                 <a href="#">{{ main.user.name }}</a>
-                <ul class="dropdown" style="width: 200px">
+                <ul class="dropdown">
                     <li><a href="#" ng-click="main.signUserOut()">Sign out</a></li>
                 </ul>
             </li>
@@ -52,7 +53,8 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.8/angular.min.js"></script>
 <script src="js/vendor/angular-ui-router.min.js"></script>
-
+<script src="js/js/vendor/jquery.js"></script>
+<script src="js/js/foundation.min.js"></script>
 <script src="js/vendor/mm-foundation-tpls-0.5.1.js"></script>
 <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
 

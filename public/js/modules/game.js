@@ -8,7 +8,7 @@ angular.module('TicTacToe.game', [])
             },
             templateUrl: 'templates/miniTicTacToe.html',
             replace: true,
-            link: function(scope) {
+            link: function (scope) {
 
             }
         };
@@ -25,13 +25,14 @@ angular.module('TicTacToe.game', [])
         }
     })
 
-    .controller('GameCtrl', ['$scope', 'GameService','$localstorage', 'loginService', function ($scope, GameService, $localstorage, loginService) {
+    .controller('GameCtrl', ['$scope', 'GameService', '$localstorage', 'loginService', '$modal', function ($scope, GameService, $localstorage, loginService, $modal) {
         var socket = io.connect('http://localhost:8080');
 
         var connected = $localstorage.getObject('user');
         console.log(connected);
 
-        $scope.$on('$destroy', function() {
+        $scope.$on('$destroy', function () {
+            game.board = GameService.board();
             socket.emit('exit', connected.name);
         });
 
@@ -52,10 +53,10 @@ angular.module('TicTacToe.game', [])
         var game = this;
 
         this.sendRequest = function (to) {
-            if (to == "yourself"){
+            if (to == "yourself") {
                 this.yourTurn = true;
             }
-            else if (to == "computer"){
+            else if (to == "computer") {
                 alert('This feature is yet to be enabled')
             }
             else {
@@ -72,7 +73,7 @@ angular.module('TicTacToe.game', [])
             socket.emit('decline', {name: to, msg: connected.name + " declined your request"});
         };
 
-        socket.on('usernames', function(data) {
+        socket.on('usernames', function (data) {
             console.log("users:" + data);
             if (data.indexOf(connected.name) > -1) {
                 data.splice(data.indexOf(connected.name), 1);
@@ -83,7 +84,7 @@ angular.module('TicTacToe.game', [])
             $scope.$apply();
         });
 
-        socket.on('declined', function(data) {
+        socket.on('declined', function (data) {
             game.waitingToResponse = false;
 
             // inform the user he was declined
@@ -91,7 +92,7 @@ angular.module('TicTacToe.game', [])
         });
 
         this.acceptInvite = function () {
-            socket.emit('ask', game.askingUser, function(result, error){
+            socket.emit('ask', game.askingUser, function (result, error) {
                 game.waitingToResponse = result;
                 game.requestAccapted = result;
             });
@@ -99,29 +100,31 @@ angular.module('TicTacToe.game', [])
             game.askingUser = undefined;
         };
 
-        socket.on('request', function(data) {
+        socket.on('request', function (data) {
 
-            if (!game.waitingToResponse && !game.inGame){
+            if (!game.waitingToResponse && !game.inGame) {
                 game.askingUser = data;
                 $scope.$apply();
             }
-            else if (game.waitingToResponse && game.requestAccapted){
+            else if (game.waitingToResponse && game.requestAccapted) {
                 game.waitingToResponse = false;
                 game.requestAccapted = false;
 
                 game.opponent = data;
                 game.yourTurn = true;
                 game.inGame = true;
+                $scope.$apply();
                 // start game with x - allow all boards
             }
             else if (game.waitingToResponse && data == game.invitedUser) {
                 //send 3rd request
-                socket.emit('ask', data, function(result, error){
-                    if (result){
+                socket.emit('ask', data, function (result, error) {
+                    if (result) {
                         game.opponent = data;
                         game.yourTurn = false;
                         game.inGame = true;
                         game.waitingToResponse = false;
+                        $scope.$apply();
                         //start game with o
                     }
                 });
@@ -132,7 +135,7 @@ angular.module('TicTacToe.game', [])
             }
         });
 
-        socket.on('game', function(data) {
+        socket.on('game', function (data) {
             game.yourTurn = !game.yourTurn;
 
             var cell = data.cell;
@@ -150,23 +153,23 @@ angular.module('TicTacToe.game', [])
                 game.board.getWinner() ? alert(game.board.getWinner()) : null;
             }
 
-            var boardIsFull = game.board.board[cell.x][cell.y].isFull();
+            var allow = !game.board.board[cell.x][cell.y].isFull() && game.board.board[cell.x][cell.y].winner === undefined;
 
             game.board.board.forEach(function (row) {
                 row.forEach(function (col) {
-                    col.isAlowed = boardIsFull;
+                    col.isAlowed = !allow && col.winner === undefined;
                 });
             });
 
-            game.board.board[cell.x][cell.y].isAlowed = !boardIsFull;
+            game.board.board[cell.x][cell.y].isAlowed = allow;
 
             $scope.$apply();
         });
 
-        socket.emit('newuser', connected, function(result, error){
+        socket.emit('newuser', connected, function (result, error) {
             console.log(result);
 
-            if (!result){
+            if (!result) {
                 // tell the user he wasn't able to connect
                 alert("cant connect")
             }
@@ -176,8 +179,7 @@ angular.module('TicTacToe.game', [])
 
         game.board = GameService.board;
 
-        game.pick = function(cell) {
-            //if (!game.inGame) return;
+        game.pick = function (cell) {
             if (!game.yourTurn) return;
             if (!cell.board.isAlowed) return;
 
@@ -190,15 +192,15 @@ angular.module('TicTacToe.game', [])
                 game.board.getWinner() ? alert(game.board.getWinner()) : null;
             }
 
-            var boardIsFull = game.board.board[cell.x][cell.y].isFull();
+            var allow = !game.board.board[cell.x][cell.y].isFull() && game.board.board[cell.x][cell.y].winner === undefined;
 
             game.board.board.forEach(function (row) {
                 row.forEach(function (col) {
-                    col.isAlowed = boardIsFull;
+                    col.isAlowed = !allow && col.winner === undefined;
                 });
             });
 
-            game.board.board[cell.x][cell.y].isAlowed = !boardIsFull;
+            game.board.board[cell.x][cell.y].isAlowed = allow;
 
             if (game.inGame) {
                 var advance = {
@@ -212,9 +214,45 @@ angular.module('TicTacToe.game', [])
                     game.yourTurn = false;
                 });
             }
-        }
-    }]);
+        };
 
+        $scope.open = function () {
+
+            $scope.items = ['item1', 'item2', 'item3'];
+
+            var modalInstance = $modal.open({
+                templateUrl: 'templates/endGameMsg.html',
+                controller: 'ModalInstanceCtrl',
+                resolve: {
+                    items: function () {
+                        return $scope.items;
+                    }
+                }
+            });
+
+            modalInstance.result.then(function (selectedItem) {
+                alert(selectedItem);
+            }, function () {
+                console.log('return');
+            });
+        };
+    }])
+
+    .controller('ModalInstanceCtrl', function ($scope, $modalInstance, items) {
+
+        $scope.items = items;
+        $scope.selected = {
+            item: $scope.items[0]
+        };
+
+        $scope.ok = function () {
+            $modalInstance.close('hello');
+        };
+
+        $scope.cancel = function () {
+            $modalInstance.dismiss('cancel');
+        };
+    });
 
 
 function Cell(x, y, board) {
@@ -249,15 +287,15 @@ SmallBoard.prototype.isFull = function () {
 };
 
 SmallBoard.prototype.getWinner = function () {
-    var wins = [ [[0,0],[0,1], [0,2]],[[1,0],[1,1], [1,2]],[[2,0],[2,1], [2,2]],
-        [[0,0],[1,0], [2,0]],[[0,1],[1,1], [2,1]],[[0,2],[1,2], [2,2]],
-        [[0,0],[1,1], [2,2]],[[0,2],[1,1], [2,0]]];
+    var wins = [[[0, 0], [0, 1], [0, 2]], [[1, 0], [1, 1], [1, 2]], [[2, 0], [2, 1], [2, 2]],
+        [[0, 0], [1, 0], [2, 0]], [[0, 1], [1, 1], [2, 1]], [[0, 2], [1, 2], [2, 2]],
+        [[0, 0], [1, 1], [2, 2]], [[0, 2], [1, 1], [2, 0]]];
 
     var that = this;
 
     if (that.winner) return that.winner;
 
-    wins.forEach(function(win){
+    wins.forEach(function (win) {
         if (that.winner) return;
         if (that.board[win[0][0]][win[0][1]].value === that.board[win[1][0]][win[1][1]].value &&
             that.board[win[0][0]][win[0][1]].value === that.board[win[2][0]][win[2][1]].value &&
@@ -282,15 +320,15 @@ function BigBoard() {
 }
 
 BigBoard.prototype.getWinner = function () {
-    var wins = [ [[0,0],[0,1], [0,2]],[[1,0],[1,1], [1,2]],[[2,0],[2,1], [2,2]],
-        [[0,0],[1,0], [2,0]],[[0,1],[1,1], [2,1]],[[0,2],[1,2], [2,2]],
-        [[0,0],[1,1], [2,2]],[[0,2],[1,1], [2,0]]];
+    var wins = [[[0, 0], [0, 1], [0, 2]], [[1, 0], [1, 1], [1, 2]], [[2, 0], [2, 1], [2, 2]],
+        [[0, 0], [1, 0], [2, 0]], [[0, 1], [1, 1], [2, 1]], [[0, 2], [1, 2], [2, 2]],
+        [[0, 0], [1, 1], [2, 2]], [[0, 2], [1, 1], [2, 0]]];
 
     var that = this;
 
     if (that.winner) return that.winner;
 
-    wins.forEach(function(win){
+    wins.forEach(function (win) {
         if (that.winner) return;
         if (that.board[win[0][0]][win[0][1]].winner === that.board[win[1][0]][win[1][1].winner] &&
             that.board[win[0][0]][win[0][1]].winner === that.board[win[2][0]][win[2][1].winner] &&
@@ -301,7 +339,6 @@ BigBoard.prototype.getWinner = function () {
 
     return that.winner;
 };
-
 
 
 //Square.prototype.fill = function (player) {
