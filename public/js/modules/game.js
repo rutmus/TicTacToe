@@ -32,10 +32,12 @@ angular.module('TicTacToe.game', [])
         console.log(connected);
 
         $scope.$on('$destroy', function() {
+            console.log("delete socket: " + connected.name );
             socket.emit('exit', connected.name);
         });
 
         window.onbeforeunload = function (event) {
+            console.log("delete socket: " + connected.name );
             socket.emit('exit', connected.name);
         };
 
@@ -71,8 +73,10 @@ angular.module('TicTacToe.game', [])
 
         socket.on('usernames', function(data) {
             console.log("users:" + data);
-            data.splice(data.indexOf(connected.name), 1 );
-            data.unshift("yourself");
+            if (data.indexOf(connected.name) > -1) {
+                data.splice(data.indexOf(connected.name), 1);
+                data.unshift("yourself");
+            }
             game.users = data;
             $scope.$apply();
         });

@@ -1,6 +1,8 @@
 <div class="small-3 large-2 columns my-side-bar" style="background-color: darkgrey; height: 100%">
+    <l>Choose your opponent:</l>
+    <input type="text" placeholder="Search user" ng-model="game.search.name">
     <ul class="side-nav user-list">
-        <li ng-repeat="user in game.users" ng-click="game.sendRequest(user)">{{ user }}</li>
+        <li ng-repeat="user in game.users | filter: game.search.name" ng-click="game.sendRequest(user)">{{ user }}</li>
     </ul>
 </div>
 
