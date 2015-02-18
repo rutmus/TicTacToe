@@ -66,6 +66,7 @@ angular.module('TicTacToe.game', [])
 
         socket.on('usernames', function(data) {
             console.log("users:" + data);
+            //data[connected.name] = "yourself";
             game.users = data;
             $scope.$apply();
         });

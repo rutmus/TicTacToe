@@ -19,7 +19,9 @@ var userSchema = mongoose.Schema({
     country: String,
     blocked: Boolean,
     admin: Boolean,
-    createDate: Date
+    createDate: Date,
+    wins : Number,
+    loses: Number
 }, { collection: 'users'});
 
 var User = mongoose.model('User', userSchema);
@@ -108,6 +110,9 @@ app.get("/", function(req, res) {
     res.sendFile(__dirname + "/index.html");
 });
 
+
+
+
 app.get("/getAllUsers", function(req, res) {
 
     User.find({}, function (err, db_users) {
@@ -154,6 +159,24 @@ app.get("/getUsersPerMonth", function(req, res) {
         });
 });
 
+
+app.post("/setGameResult", function(req, res) {
+    User.findOne({'name' : req.body.name}, function (err, user){
+        if (user) {
+            if (body.win)
+                user.wins++;
+            else
+                user.loses++;
+            res.json(user);
+        }
+        else {
+            console.log('sign in attempt failed');
+            res.json(500, { message: 'User or password are incorrect' });
+        }
+    })
+});
+
+
 app.post("/checkUser", function(req, res) {
     var userToCheck = User(req.body);
     User.findOne({'name' : req.body.name, 'password' : req.body.password}, function (err, user){
@@ -188,6 +211,8 @@ app.post("/createUser", function(req, res) {
                     newUser.admin = false;
                     newUser.blocked = false;
                     newUser.createDate = Date.now();
+                    newUser.wins = 0;
+                    newUser.loses = 0;
                     newUser.save();
                     console.log(newUser.name + " has created");
                     res.json(newUser);
