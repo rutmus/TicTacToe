@@ -52,11 +52,16 @@ angular.module('TicTacToe.game', [])
         var game = this;
 
         this.sendRequest = function (to) {
-            game.invitedUser = to;
+            if (to == "yourself"){
+                this.yourTurn = true;
+            }
+            else {
+                game.invitedUser = to;
 
-            socket.emit('ask', to, function(result, error){
-                game.waitingToResponse = result;
-            });
+                socket.emit('ask', to, function (result, error) {
+                    game.waitingToResponse = result;
+                });
+            }
         };
 
         this.declineRequest = function (to) {
@@ -66,7 +71,8 @@ angular.module('TicTacToe.game', [])
 
         socket.on('usernames', function(data) {
             console.log("users:" + data);
-            //data[connected.name] = "yourself";
+            data.splice(data.indexOf(connected.name), 1 );
+            data.unshift("yourself");
             game.users = data;
             $scope.$apply();
         });
@@ -165,7 +171,7 @@ angular.module('TicTacToe.game', [])
         game.board = GameService.board;
 
         game.pick = function(cell) {
-            if (!game.inGame) return;
+            //if (!game.inGame) return;
             if (!game.yourTurn) return;
             if (!cell.board.isAlowed) return;
 
@@ -188,18 +194,18 @@ angular.module('TicTacToe.game', [])
 
             game.board.board[cell.x][cell.y].isAlowed = !boardIsFull;
 
-            var advance = {
-                name: game.opponent,
-                cell: {x: cell.x, y: cell.y },
-                board: {x: cell.board.x, y: cell.board.y },
-                value: cell.value
-            };
+            if (game.inGame) {
+                var advance = {
+                    name: game.opponent,
+                    cell: {x: cell.x, y: cell.y},
+                    board: {x: cell.board.x, y: cell.board.y},
+                    value: cell.value
+                };
 
-            socket.emit('advance', advance, function (result, error) {
-                game.yourTurn = false;
-            });
-
-
+                socket.emit('advance', advance, function (result, error) {
+                    game.yourTurn = false;
+                });
+            }
         }
     }]);
 
