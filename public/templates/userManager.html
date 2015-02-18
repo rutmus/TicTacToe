@@ -14,6 +14,7 @@
                     <th width="200">Email</th>
                     <th width="100">Country</th>
                     <th width="50">Block</th>
+                    <th width="50">Delete</th>
                 </tr>
             </thead>
             <tbody>
@@ -22,8 +23,8 @@
                     <td>{{user.password}}</td>
                     <td>{{user.mail}}</td>
                     <td>{{user.country}}</td>
-                    <!--<td>{{user.blocked}}</td>-->
-                    <td><input id="checkbox1" type="checkbox" ng-model="user.blocked" ng-change="man.blockUser(user)"></td>
+                    <td><input type="checkbox" ng-model="user.blocked" ng-change="man.blockUser(user)"></td>
+                    <td><button ng-click="man.deleteUser(user)"></button></td>
                 </tr>
             </tbody>
         </table>

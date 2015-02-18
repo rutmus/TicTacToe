@@ -111,8 +111,6 @@ app.get("/", function(req, res) {
 });
 
 
-
-
 app.get("/getAllUsers", function(req, res) {
 
     User.find({}, function (err, db_users) {
@@ -163,10 +161,27 @@ app.get("/getUsersPerMonth", function(req, res) {
 app.post("/setGameResult", function(req, res) {
     User.findOne({'name' : req.body.name}, function (err, user){
         if (user) {
-            if (body.win)
-                user.wins++;
-            else
-                user.loses++;
+            var update = { wins: user.wins + 1 };
+            if (!req.body.win)
+                update = { loses: user.loses + 1 };
+
+            User.findByIdAndUpdate(user._id, { $set: update}, function (err, user) {
+                res.json(user);
+            });
+        }
+        else {
+            res.json(500, { message: 'error occurred' });
+        }
+    })
+});
+
+
+app.post("/checkUser", function(req, res) {
+    var userToCheck = User(req.body);
+    User.findOne({'name' : req.body.name, 'password' : req.body.password}, function (err, user){
+        if (user) {
+            console.log(user.name + " has logged in");
+            user.online = true;
             res.json(user);
         }
         else {
@@ -176,8 +191,7 @@ app.post("/setGameResult", function(req, res) {
     })
 });
 
-
-app.post("/checkUser", function(req, res) {
+app.post("/deleteUser", function(req, res) {
     var userToCheck = User(req.body);
     User.findOne({'name' : req.body.name, 'password' : req.body.password}, function (err, user){
         if (user) {

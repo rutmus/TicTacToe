@@ -3,14 +3,14 @@ var app = angular.module('tic-tac-toe', ['ui.router', 'TicTacToe.users', 'TicTac
 //
 //window.onbeforeunload = function (event) {
 //
-//    var message = 'Sure you want to leave?';
-//    if (typeof event == 'undefined') {
-//        event = window.event;
-//    }
-//    if (event) {
-//        event.returnValue = message;
-//    }
-//    return message;
+// var message = 'Sure you want to leave?';
+// if (typeof event == 'undefined') {
+// event = window.event;
+// }
+// if (event) {
+// event.returnValue = message;
+// }
+// return message;
 //};
 
     .config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
@@ -96,12 +96,7 @@ var app = angular.module('tic-tac-toe', ['ui.router', 'TicTacToe.users', 'TicTac
     }])
 
     .controller('MainCtrl', ['$localstorage', '$sce', function ($localstorage, $sce) {
-        this.trustedUrl = $sce.trustAsResourceUrl("www.youtube.com/watch?v=37PC0bGMiTI");
-        console.log(this.trustedUrl);
-
-        this.user = $localstorage.getObject('user');
-
-        this.isUser = function () {
+        this.isUser = function() {
             if ($localstorage.getObject('user')) {
                 return true;
             }

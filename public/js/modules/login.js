@@ -41,6 +41,12 @@ angular.module('TicTacToe.users', [])
             console.log(user);
         };
 
+        this.deleteUser = function(user){
+            loginService.setGameResult(user, true, function(data){
+                console.log(data);
+            });
+        }
+
         var that = this;
 
         loginService.getAllUsers(function(data){
