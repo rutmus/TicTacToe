@@ -47,12 +47,13 @@
 </div>
 
 
-<div ng-show="game.askingUser" class="small-2 large-2 columns panel callout radius">
-    <h5>You got an invitation from {{ game.askingUser }}</h5>
+<div  class="small-2 large-2 columns">
+    <div ng-show="game.askingUser" class="panel callout radius"><h5>You got an invitation from {{ game.askingUser }}</h5>
 
     <p>Please play fair, without kicking the nuts</p>
-    <button class='button' ng-click="game.acceptInvite()">Let's Play</button>
+    <button class='button' ng-click="game.acceptInvite()">Let's Play</button></div>
 </div>
+
 
 
 

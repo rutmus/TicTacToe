@@ -13,7 +13,7 @@ var app = angular.module('tic-tac-toe', ['ui.router', 'TicTacToe.users', 'TicTac
 //    return message;
 //};
 
-    .config(function($stateProvider, $urlRouterProvider, $locationProvider) {
+    .config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
         $stateProvider
 
             .state('login', {
@@ -39,24 +39,24 @@ var app = angular.module('tic-tac-toe', ['ui.router', 'TicTacToe.users', 'TicTac
             .state('admin',
             {
                 url: '/admin',
-                controller: 'AdminCtrl as admin',
+                abstract: true,
                 templateUrl: 'templates/admin.html'
             })
 
             .state('admin.userManager', {
-                url: '/manager',
+                url: '^/manager',
                 controller: 'UserManagerCtrl as man',
                 templateUrl: 'templates/userManager.html'
             })
 
             .state('admin.map', {
-                url: '/map',
+                url: '^/map',
                 controller: 'MapCtrl as mapC',
                 templateUrl: 'templates/map.html'
             })
 
             .state('admin.graph', {
-                url: '/graph',
+                url: '^/graph',
                 controller: 'GraphsCtrl as gra',
                 templateUrl: 'templates/graph.html'
             })
@@ -75,39 +75,33 @@ var app = angular.module('tic-tac-toe', ['ui.router', 'TicTacToe.users', 'TicTac
         });
     })
 
-    .factory('$localstorage', ['$window', function($window) {
+    .factory('$localstorage', ['$window', function ($window) {
         return {
-            set: function(key, value) {
+            set: function (key, value) {
                 $window.localStorage[key] = value;
             },
-            get: function(key, defaultValue) {
+            get: function (key, defaultValue) {
                 return $window.localStorage[key] || defaultValue;
             },
-            setObject: function(key, value) {
+            setObject: function (key, value) {
                 $window.localStorage[key] = JSON.stringify(value);
             },
-            getObject: function(key) {
+            getObject: function (key) {
                 return JSON.parse($window.localStorage[key] || false);
             },
-            remove: function(key) {
+            remove: function (key) {
                 $window.localStorage.removeItem(key);
             }
         }
     }])
 
-    .controller('AdminCtrl', ['$state', function ($state) {
-        //$state.go('admin.userManager');
-
-        this.changeTab = function(tabName) {
-            $state.go(tabName);
-        }
-    }])
-
-    .controller('MainCtrl', ['$localstorage', '$sce', function($localstorage, $sce) {
+    .controller('MainCtrl', ['$localstorage', '$sce', function ($localstorage, $sce) {
         this.trustedUrl = $sce.trustAsResourceUrl("www.youtube.com/watch?v=37PC0bGMiTI");
-        console.log(this.trustedUrl );
+        console.log(this.trustedUrl);
 
-        this.isUser = function() {
+        this.user = $localstorage.getObject('user');
+
+        this.isUser = function () {
             if ($localstorage.getObject('user')) {
                 return true;
             }

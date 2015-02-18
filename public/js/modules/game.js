@@ -25,7 +25,7 @@ angular.module('TicTacToe.game', [])
         }
     })
 
-    .controller('GameCtrl', ['$scope', 'GameService','$localstorage', function ($scope, GameService, $localstorage) {
+    .controller('GameCtrl', ['$scope', 'GameService','$localstorage', 'loginService', function ($scope, GameService, $localstorage, loginService) {
         var socket = io.connect('http://localhost:8080');
 
         var connected = $localstorage.getObject('user');
@@ -87,7 +87,7 @@ angular.module('TicTacToe.game', [])
             // inform the user he was declined
             alert(data);
         });
-        
+
         this.acceptInvite = function () {
             socket.emit('ask', game.askingUser, function(result, error){
                 game.waitingToResponse = result;
@@ -299,6 +299,8 @@ BigBoard.prototype.getWinner = function () {
 
     return that.winner;
 };
+
+
 
 //Square.prototype.fill = function (player) {
 //    this.player = player;
