@@ -32,16 +32,14 @@ angular.module('TicTacToe.game', [])
         console.log(connected);
 
         $scope.$on('$destroy', function() {
-            console.log("delete socket: " + connected.name );
             socket.emit('exit', connected.name);
         });
 
         window.onbeforeunload = function (event) {
-            console.log("delete socket: " + connected.name );
             socket.emit('exit', connected.name);
         };
 
-        this.users = [];
+        this.users = ['yourself', 'computer'];
         this.waitingToResponse = false;
         this.inGame = false;
         this.requestAccapted = false;
@@ -56,6 +54,9 @@ angular.module('TicTacToe.game', [])
         this.sendRequest = function (to) {
             if (to == "yourself"){
                 this.yourTurn = true;
+            }
+            else if (to == "computer"){
+                alert('This feature is yet to be enabled')
             }
             else {
                 game.invitedUser = to;
@@ -75,6 +76,7 @@ angular.module('TicTacToe.game', [])
             console.log("users:" + data);
             if (data.indexOf(connected.name) > -1) {
                 data.splice(data.indexOf(connected.name), 1);
+                data.unshift("computer");
                 data.unshift("yourself");
             }
             game.users = data;

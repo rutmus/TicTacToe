@@ -194,6 +194,7 @@ app.post("/deleteUser", function(req, res) {
         if (user) {
             User.remove({ _id: user._id }, function (err, user) {
                 User.find({}, function (err, db_users) {
+                    console.log(db_users.length);
                     res.json(db_users);
                 })
             });
@@ -235,6 +236,11 @@ app.post("/deleteUser", function(req, res) {
 });
 
 app.post("/createUser", function(req, res) {
+    if (req.body.name == 'computer' || req.body.name == 'yourself'){
+        res.json(500, { message: 'Username already exists' });
+        return;
+    }
+
     User.findOne({'name' : req.body.name}, function (err, user){
         if (user) {
             console.log(user.name + " already exists");

@@ -53,11 +53,11 @@ angular.module('TicTacToe.users', [])
         };
 
         this.deleteUser = function(user){
-            loginService.setGameResult(user, true, function(data){
+            this.users.splice(this.users.indexOf(user), 1);
+            loginService.deleteUser(user, function(data){
                 console.log(data);
-                that.users = data;
             });
-        }
+        };
 
         var that = this;
 

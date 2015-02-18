@@ -95,7 +95,7 @@ var app = angular.module('tic-tac-toe', ['ui.router', 'TicTacToe.users', 'TicTac
         }
     }])
 
-    .controller('MainCtrl', ['$localstorage', '$sce', function ($localstorage, $sce) {
+    .controller('MainCtrl', ['$localstorage', '$state', function ($localstorage, $state) {
 
         this.user = $localstorage.getObject('user');
 
@@ -104,6 +104,8 @@ var app = angular.module('tic-tac-toe', ['ui.router', 'TicTacToe.users', 'TicTac
             console.log('try');
             $localstorage.remove(user);
             this.user = null;
+
+            $state.go('main');
         }
 
         this.isUser = function() {
