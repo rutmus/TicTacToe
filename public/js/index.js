@@ -96,8 +96,18 @@ var app = angular.module('tic-tac-toe', ['ui.router', 'TicTacToe.users', 'TicTac
     }])
 
     .controller('MainCtrl', ['$localstorage', '$sce', function ($localstorage, $sce) {
+
+        this.user = $localstorage.getObject('user');
+
+        this.signUserOut = function()
+        {
+            console.log('try');
+            $localstorage.remove(user);
+            this.user = null;
+        }
+
         this.isUser = function() {
-            if ($localstorage.getObject('user')) {
+            if (this.user) {
                 return true;
             }
             return false;

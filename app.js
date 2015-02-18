@@ -71,6 +71,7 @@ io.sockets.on('connection', function (socket) {
 
     socket.on('newuser', function (data, callback) {
         if (data.name in users) {
+            console.log('connected to a game')
             callback(false);
         }
         else {
@@ -175,6 +176,33 @@ app.post("/setGameResult", function(req, res) {
     })
 });
 
+app.post("/blockUser", function(req, res) {
+    User.findOne({'name' : req.body.name}, function (err, user){
+        if (user) {
+            User.findByIdAndUpdate(user._id, { $set: { blocked: req.body.blocked }}, function (err, user) {
+                res.json(user);
+            });
+        }
+        else {
+            res.json(500, { message: 'error occurred' });
+        }
+    })
+});
+
+app.post("/deleteUser", function(req, res) {
+    User.findOne({'name' : req.body.name}, function (err, user){
+        if (user) {
+            User.remove({ _id: user._id }, function (err, user) {
+                User.find({}, function (err, db_users) {
+                    res.json(db_users);
+                })
+            });
+        }
+        else {
+            res.json(500, { message: 'error occurred' });
+        }
+    })
+});
 
 app.post("/checkUser", function(req, res) {
     var userToCheck = User(req.body);

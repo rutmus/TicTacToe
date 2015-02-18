@@ -2,7 +2,8 @@ angular.module('TicTacToe.users', [])
 
     .factory('loginService', ['$http', '$state', '$window', '$localstorage', function ($http, $state, $window, $localstorage) {
 
-        return ({loginUser: loginUser, saveUser: saveUser, getAllUsers: getAllUsers, setGameResult: setGameResult });
+        return ({loginUser: loginUser, saveUser: saveUser, getAllUsers: getAllUsers, setGameResult: setGameResult,
+                 blockUser: blockUser, deleteUser: deleteUser });
 
         function loginUser(user, onErrorCallback) {
             $http.post('http://localhost:8080/checkUser', user).success(successCallback).error(onErrorCallback);
@@ -18,6 +19,14 @@ angular.module('TicTacToe.users', [])
 
         function setGameResult(user, win, successCallback, onErrorCallback) {
             $http.post('http://localhost:8080/setGameResult', {name: user.name, win: win}).success(successCallback).error(onErrorCallback);
+        }
+
+        function blockUser(user, successCallback, onErrorCallback) {
+            $http.post('http://localhost:8080/blockUser', user).success(successCallback).error(onErrorCallback);
+        }
+
+        function deleteUser(user, successCallback, onErrorCallback) {
+            $http.post('http://localhost:8080/deleteUser', user).success(successCallback).error(onErrorCallback);
         }
 
         function successCallback(user){
@@ -38,12 +47,15 @@ angular.module('TicTacToe.users', [])
         this.users = {};
 
         this.blockUser = function(user){
-            console.log(user);
+            loginService.blockUser(user, function(data){
+                console.log(data);
+            });
         };
 
         this.deleteUser = function(user){
             loginService.setGameResult(user, true, function(data){
                 console.log(data);
+                that.users = data;
             });
         }
 

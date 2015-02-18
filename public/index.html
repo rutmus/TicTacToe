@@ -33,7 +33,7 @@
             <li ng-if="main.isUser()" class="has-dropdown">
                 <a href="#">{{ main.user.name }}</a>
                 <ul class="dropdown" style="width: 200px">
-                    <li><a href="#" ng-click="">Sign out</a></li>
+                    <li><a href="#" ng-click="main.signUserOut()">Sign out</a></li>
                 </ul>
             </li>
         </ul>
