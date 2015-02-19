@@ -1,0 +1,27 @@
+<style>
+
+    body {
+        font: 10px sans-serif;
+    }
+
+    .arc path {
+        stroke: #fff;
+    }
+
+</style>
+
+<div class="text-center">
+    <h1>{{$root.loggedUser.name}}</h1>
+
+    <br>
+
+    <p>Mail: {{$root.loggedUser.mail}}</p>
+    <p>Wins: {{$root.loggedUser.wins}}</p>
+    <p>Losses: {{$root.loggedUser.loses}}</p>
+
+    <button ng-click="ctrl.signUserOut()">Sign out</button>
+    <button ng-click="ctrl.deleteUser()">Delete account</button>
+
+</div>
+
+<body>

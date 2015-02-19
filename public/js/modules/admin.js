@@ -31,22 +31,18 @@ angular.module('TicTacToe.statistics', ['uiGmapgoogle-maps'])
         var that = this;
 
         this.setGraph = function(){
-            console.log(this.selectedYear);
+            d3.select("svg").remove();
             drawGraph(this.selectedYear.monthly)
         }
 
         dataService.getUsersPerMonth(function(result){
             that.usersPerMonth = result;
 
-            that.selectedYear = result[result.length - 1];
+            that.selectedYear = result[0];
             that.setGraph();
-            //drawGraph(that.usersPerMonth[1].monthly);
         });
 
         function drawGraph(monthly){
-
-            // cleaning the last graph
-            d3.select("svg").remove();
 
             var data = [
                 {month: "January", UserRegistered: 0},

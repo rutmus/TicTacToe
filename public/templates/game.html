@@ -67,6 +67,11 @@
         <p>Please play fair, without kicking the nuts</p>
         <button class='button' ng-click="game.acceptInvite()">Let's Play</button>
     </div>
+    <div ng-show="game.waitingToResponse" class="panel callout radius"><h5>Invitation sent to {{ game.invitedUser
+        }}</h5>
+
+        <button class='button' ng-click="game.cancelInvite()">Cancel</button>
+    </div>
 </div>
 
 

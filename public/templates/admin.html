@@ -1,14 +1,12 @@
-<tabset vertical="true" type="navType" class="left-align">
-    <!--<tab heading="User management" select="admin.changeTab('admin.userManager')"></tab>-->
-    <!--<tab heading="Registration graph" select="admin.changeTab('admin.graph')"></tab>-->
-    <!--<tab heading="Map view" select="admin.changeTab('admin.map')" ></tab>-->
+<div>
+    <tabset vertical="true" type="navType" class="left-align">
+        <tab heading="User management" ui-sref=".userManager"></tab>
+        <tab heading="Registration graph" ui-sref=".graph"></tab>
+        <tab heading="Map View" ui-sref=".map"></tab>
+    </tabset>
+</div>
 
-    <tab heading="User management" ui-sref=".userManager"></tab>
-    <tab heading="Registration graph" ui-sref=".graph"></tab>
-    <tab heading="Map View" ui-sref=".map"></tab>
-</tabset>
-
-<section class="left-align">
+<section class="text-center">
 
     <ui-view ></ui-view>
 

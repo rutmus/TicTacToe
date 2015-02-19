@@ -52,10 +52,10 @@ io.sockets.on('connection', function (socket) {
         }
     });
 
-    socket.on('ask', function (user, callback) {
-        console.log('New request from ', user);
-        if (user in users) {
-            users[user].emit('request', socket.username);
+    socket.on('ask', function (data, callback) {
+        console.log('New request to ', data.to);
+        if (data.to in users) {
+            users[data.to].emit('request', { from: socket.username, code: data.data});
             callback(true);
         }
         else {
@@ -210,22 +210,6 @@ app.post("/checkUser", function(req, res) {
     User.findOne({'name' : req.body.name, 'password' : req.body.password}, function (err, user){
         if (user) {
             console.log(user.name + " has logged in");
-            user.online = true;
-            res.json(user);
-        }
-        else {
-            console.log('sign in attempt failed');
-            res.json(500, { message: 'User or password are incorrect' });
-        }
-    })
-});
-
-app.post("/deleteUser", function(req, res) {
-    var userToCheck = User(req.body);
-    User.findOne({'name' : req.body.name, 'password' : req.body.password}, function (err, user){
-        if (user) {
-            console.log(user.name + " has logged in");
-            user.online = true;
             res.json(user);
         }
         else {

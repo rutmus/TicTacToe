@@ -36,6 +36,13 @@ var app = angular.module('tic-tac-toe', ['ui.router', 'TicTacToe.users', 'TicTac
                 templateUrl: 'templates/game.html'
             })
 
+            .state('user',
+            {
+                url: '/user',
+                controller: 'UserDetailsCtrl as ctrl',
+                templateUrl: 'templates/userDetails.html'
+            })
+
             .state('admin',
             {
                 url: '/admin',
@@ -95,29 +102,13 @@ var app = angular.module('tic-tac-toe', ['ui.router', 'TicTacToe.users', 'TicTac
         }
     }])
 
-    .controller('MainCtrl', ['$localstorage', '$state', function ($localstorage, $state) {
+    .controller('MainCtrl', ['$localstorage', 'loginService', '$rootScope', function ($localstorage, loginService, $rootScope) {
 
-        this.user = $localstorage.getObject('user');
+        var user = $localstorage.getObject('user');
 
-        this.signUserOut = function(event) {
-
-            console.log('try');
-            $localstorage.remove(user);
-            this.user = null;
-
-            $state.go('main');
-        };
-
-        this.stam = function() {
-            alert('asd');
-        };
-
-        this.isUser = function() {
-            if (this.user) {
-                return true;
-            }
-            return false;
-        };
+        if (user){
+            loginService.loginUser({ name: user.name, password: user.password });
+        }
     }]);
 
 

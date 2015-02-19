@@ -26,17 +26,17 @@
 
     <section class="top-bar-section">
         <ul class="right">
-            <li ng-if="!main.isUser()"><a href="/login">Sign in</a></li>
-            <li><a href="/register">Register</a></li>
-            <li ng-if="main.isUser()"><a ui-sref="game">Game</a></li>
-            <li ng-if="main.isUser()"><a ui-sref="admin.userManager">Admin</a></li>
-            <li><a href="" ng-click="main.stam()">asdad</a></li>
-            <li ng-if="main.isUser()" class="has-dropdown">
-                <a href="#">{{ main.user.name }}</a>
-                <ul class="dropdown">
-                    <li><a href="#" ng-click="main.signUserOut()">Sign out</a></li>
-                </ul>
-            </li>
+            <li ng-if="!$root.loggedUser"><a href="/login">Sign in</a></li>
+            <li ng-if="!$root.loggedUser"><a href="/register">Register</a></li>
+            <li ng-if="$root.loggedUser"><a ui-sref="game">Game</a></li>
+            <li ng-if="$root.loggedUser.admin"><a ui-sref="admin.userManager">Admin</a></li>
+            <li ng-if="$root.loggedUser"><a ui-sref="user">{{ $root.loggedUser.name }}</a></li>
+            <!--<li ng-if="$root.loggedUser" class="has-dropdown">-->
+                <!--<a href="#">{{ $root.loggedUser.name }}</a>-->
+                <!--<ul class="dropdown">-->
+                    <!--<li><a href="#" ng-click="main.signUserOut()">Sign out</a></li>-->
+                <!--</ul>-->
+            <!--</li>-->
         </ul>
     </section>
 
