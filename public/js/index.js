@@ -107,7 +107,10 @@ var app = angular.module('tic-tac-toe', ['ui.router', 'TicTacToe.users', 'TicTac
         var user = $localstorage.getObject('user');
 
         if (user){
-            loginService.loginUser({ name: user.name, password: user.password });
+            loginService.loginUser({ name: user.name, password: user.password }, function(){
+                console.log('removed: ' + user.name);
+                $localstorage.remove('user');
+            });
         }
     }]);
 

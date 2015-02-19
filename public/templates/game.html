@@ -1,61 +1,66 @@
-<div class="small-3 large-2 columns my-side-bar" style="background-color: darkgrey; height: 100%">
+<div class="small-3 large-2 columns my-side-bar" style="background-color: darkgrey; height: 100%" >
     <l>Choose your opponent:</l>
     <input type="text" placeholder="Search user" ng-model="game.search.name">
     <ul class="side-nav user-list">
-        <li ng-repeat="user in game.users | filter: game.search.name" ng-click="game.sendRequest(user)">{{ user }}</li>
+        <li ng-disabled="game.inGame" ng-repeat="user in game.users | filter: game.search.name" ng-click="game.sendRequest(user)">{{ user }}</li>
     </ul>
 </div>
 
 
 <div class="tic-tac-toe small-7 large-8 columns">
 
+    <h3 ng-show="!(game.inGame || game.yourTurn)">Choose an opponent to play against</h3>
+
     <h3 ng-show="game.inGame">You vs {{ game.opponent }}</h3>
+    <h3 ng-show="!game.inGame && game.yourTurn">Solo Game</h3>
 
-    <button class="button" ng-click="open()">Open me!</button>
+    <button ng-show="game.inGame" class="button" ng-click="game.surrender()">Surrender</button>
+    <button ng-show="!game.inGame && game.yourTurn" class="button" ng-click="game.cleanBoard()">Clean game</button>
 
-    <div class="row">
-        <div class="col"
-             ng-class="{ boardActive: game.board.board[0][0].isAlowed, 'board-winner-x': game.board.board[0][0].winner == 'x', 'board-winner-y': game.board.board[0][0].winner == 'o' }">
-            <mini-tic-tac-toe mini-board="game.board.board[0][0].board"></mini-tic-tac-toe>
+    <div ng-show="game.inGame || game.yourTurn">
+        <div class="row">
+            <div class="col"
+                 ng-class="{ boardActive: game.board.board[0][0].isAlowed, 'board-winner-x': game.board.board[0][0].winner == 'x', 'board-winner-y': game.board.board[0][0].winner == 'o' }">
+                <mini-tic-tac-toe mini-board="game.board.board[0][0].board"></mini-tic-tac-toe>
+            </div>
+            <div class="col"
+                 ng-class="{ boardActive: game.board.board[0][1].isAlowed, 'board-winner-x': game.board.board[0][1].winner == 'x', 'board-winner-y': game.board.board[0][1].winner == 'o' }">
+                <mini-tic-tac-toe mini-board="game.board.board[0][1].board"></mini-tic-tac-toe>
+            </div>
+            <div class="col"
+                 ng-class="{ boardActive: game.board.board[0][2].isAlowed, 'board-winner-x': game.board.board[0][2].winner == 'x', 'board-winner-y': game.board.board[0][2].winner == 'o' }">
+                <mini-tic-tac-toe mini-board="game.board.board[0][2].board"></mini-tic-tac-toe>
+            </div>
         </div>
-        <div class="col"
-             ng-class="{ boardActive: game.board.board[0][1].isAlowed, 'board-winner-x': game.board.board[0][1].winner == 'x', 'board-winner-y': game.board.board[0][1].winner == 'o' }">
-            <mini-tic-tac-toe mini-board="game.board.board[0][1].board"></mini-tic-tac-toe>
+        <div class="row">
+            <div class="col"
+                 ng-class="{ boardActive: game.board.board[1][0].isAlowed, 'board-winner-x': game.board.board[1][0].winner == 'x', 'board-winner-y': game.board.board[1][0].winner == 'o' }">
+                <mini-tic-tac-toe mini-board="game.board.board[1][0].board"></mini-tic-tac-toe>
+            </div>
+            <div class="col"
+                 ng-class="{ boardActive: game.board.board[1][1].isAlowed, 'board-winner-x': game.board.board[1][1].winner == 'x', 'board-winner-y': game.board.board[1][1].winner == 'o' }">
+                <mini-tic-tac-toe mini-board="game.board.board[1][1].board"></mini-tic-tac-toe>
+            </div>
+            <div class="col"
+                 ng-class="{ boardActive: game.board.board[1][2].isAlowed, 'board-winner-x': game.board.board[1][2].winner == 'x', 'board-winner-y': game.board.board[1][2].winner == 'o' }">
+                <mini-tic-tac-toe mini-board="game.board.board[1][2].board"></mini-tic-tac-toe>
+            </div>
         </div>
-        <div class="col"
-             ng-class="{ boardActive: game.board.board[0][2].isAlowed, 'board-winner-x': game.board.board[0][2].winner == 'x', 'board-winner-y': game.board.board[0][2].winner == 'o' }">
-            <mini-tic-tac-toe mini-board="game.board.board[0][2].board"></mini-tic-tac-toe>
+        <div class="row">
+            <div class="col"
+                 ng-class="{ boardActive: game.board.board[2][0].isAlowed, 'board-winner-x': game.board.board[2][0].winner == 'x', 'board-winner-y': game.board.board[2][0].winner == 'o' }">
+                <mini-tic-tac-toe mini-board="game.board.board[2][0].board"></mini-tic-tac-toe>
+            </div>
+            <div class="col"
+                 ng-class="{ boardActive: game.board.board[2][1].isAlowed, 'board-winner-x': game.board.board[2][1].winner == 'x', 'board-winner-y': game.board.board[2][1].winner == 'o' }">
+                <mini-tic-tac-toe mini-board="game.board.board[2][1].board"></mini-tic-tac-toe>
+            </div>
+            <div class="col"
+                 ng-class="{ boardActive: game.board.board[2][2].isAlowed, 'board-winner-x': game.board.board[2][2].winner == 'x', 'board-winner-y': game.board.board[2][2].winner == 'o' }">
+                <mini-tic-tac-toe mini-board="game.board.board[2][2].board"></mini-tic-tac-toe>
+            </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col"
-             ng-class="{ boardActive: game.board.board[1][0].isAlowed, 'board-winner-x': game.board.board[1][0].winner == 'x', 'board-winner-y': game.board.board[1][0].winner == 'o' }">
-            <mini-tic-tac-toe mini-board="game.board.board[1][0].board"></mini-tic-tac-toe>
-        </div>
-        <div class="col"
-             ng-class="{ boardActive: game.board.board[1][1].isAlowed, 'board-winner-x': game.board.board[1][1].winner == 'x', 'board-winner-y': game.board.board[1][1].winner == 'o' }">
-            <mini-tic-tac-toe mini-board="game.board.board[1][1].board"></mini-tic-tac-toe>
-        </div>
-        <div class="col"
-             ng-class="{ boardActive: game.board.board[1][2].isAlowed, 'board-winner-x': game.board.board[1][2].winner == 'x', 'board-winner-y': game.board.board[1][2].winner == 'o' }">
-            <mini-tic-tac-toe mini-board="game.board.board[1][2].board"></mini-tic-tac-toe>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col"
-             ng-class="{ boardActive: game.board.board[2][0].isAlowed, 'board-winner-x': game.board.board[2][0].winner == 'x', 'board-winner-y': game.board.board[2][0].winner == 'o' }">
-            <mini-tic-tac-toe mini-board="game.board.board[2][0].board"></mini-tic-tac-toe>
-        </div>
-        <div class="col"
-             ng-class="{ boardActive: game.board.board[2][1].isAlowed, 'board-winner-x': game.board.board[2][1].winner == 'x', 'board-winner-y': game.board.board[2][1].winner == 'o' }">
-            <mini-tic-tac-toe mini-board="game.board.board[2][1].board"></mini-tic-tac-toe>
-        </div>
-        <div class="col"
-             ng-class="{ boardActive: game.board.board[2][2].isAlowed, 'board-winner-x': game.board.board[2][2].winner == 'x', 'board-winner-y': game.board.board[2][2].winner == 'o' }">
-            <mini-tic-tac-toe mini-board="game.board.board[2][2].board"></mini-tic-tac-toe>
-        </div>
-    </div>
-
 
 </div>
 

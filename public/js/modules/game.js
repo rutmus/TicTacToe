@@ -28,43 +28,52 @@ angular.module('TicTacToe.game', [])
     .controller('GameCtrl', ['$scope', 'GameService', '$localstorage', 'userService', '$modal', '$rootScope', function ($scope, GameService, $localstorage, userService, $modal, $rootScope) {
 
         var socket = io.connect('http://localhost:8080');
-
         var connected = $rootScope.loggedUser;
 
-        console.log(connected.name);
+        function closeSocket(){
+            if (game.opponent != ""){
+                userService.setGameResult(connected, false);
+                socket.emit('quit', game.opponent);
+            }
+
+            socket.emit('exit', connected.name);
+            //socket.disconnect();
+        }
 
         $scope.$on('$destroy', function () {
-            //game.board = GameService.board();
-            socket.emit('exit', connected.name);
+            closeSocket();
         });
 
         window.onbeforeunload = function (event) {
-            socket.emit('exit', connected.name);
+            closeSocket();
         };
 
         this.users = ['yourself', 'computer'];
         this.waitingToResponse = false;
         this.inGame = false;
-        this.requestAccapted = false;
         this.invitedUser = "";
         this.askingUser = undefined;
         this.yourTurn = false;
         this.opponent = "";
-        //this.inventions = [];
 
         var game = this;
+
+        this.cleanBoard = function(){
+            game.board = new BigBoard();
+        };
 
         this.sendRequest = function (to) {
             if (to == "yourself") {
                 this.yourTurn = true;
+                game.board = new BigBoard();
             }
             else if (to == "computer") {
                 alert('This feature is yet to be enabled')
             }
             else {
+                this.yourTurn = false;
                 game.invitedUser = to;
-
-                socket.emit('ask', { to: to, data: false }, function (result, error) {
+                socket.emit('ask', { to: to, code: 0 }, function (result, error) {
                     game.waitingToResponse = result;
                     $scope.$apply();
                 });
@@ -77,18 +86,38 @@ angular.module('TicTacToe.game', [])
         };
 
         this.acceptInvite = function () {
-            socket.emit('ask', { to: game.askingUser, data: true }, function (result, error) {
+            socket.emit('ask', { to: game.askingUser, code: 1 }, function (result, error) {
                 game.waitingToResponse = result;
-                game.requestAccapted = result;
             });
 
             game.askingUser = undefined;
         };
 
-        this.cancelInvite = function()
-        {
+        this.cancelInvite = function(){
             game.waitingToResponse = false;
+        };
+
+        this.surrender = function(){
+            userService.setGameResult(connected, false);
+            socket.emit('quit', game.opponent);
+            $scope.open(false, 'You surrendered');
+        };
+
+        function startGame(first, opponent){
+            game.waitingToResponse = false;
+            game.opponent = opponent;
+            game.yourTurn = first;
+            game.inGame = true;
+            game.board = new BigBoard();
+            $scope.$apply();
         }
+
+        socket.on('surrender', function (data) {
+            console.log(data);
+
+            userService.setGameResult(connected, true);
+            $scope.open(true, data);
+        });
 
         socket.on('usernames', function (data) {
             console.log("users:" + data);
@@ -105,68 +134,33 @@ angular.module('TicTacToe.game', [])
             game.waitingToResponse = false;
 
             alert(data);
-            //if (game.invitedUser === game.opponent) {
-            //    game.opponent = "";
-            //    game.inGame = false;
-            //
-            //    // inform he was declined and close his pop
-            //}
-            //else{
-            //    // inform the user he was declined
-            //    alert(data);
-            //}
         });
 
         socket.on('request', function (data) {
 
             var from = data.from;
-            console.log(data);
+            console.log(game.opponent == from + ' from:' + from + ' opponent: ' + game.opponent);
 
-            if (game.board.winner !== undefined && game.opponent == from){
-                // light his button
-
+            if (game.opponent == from){
                 game.askingUser = from;
-
                 return;
             }
 
             if (!game.waitingToResponse && !game.inGame) {
-
-                console.log('first if');
-
-                if (data.code) {
-                    socket.emit('decline', {name: from, msg: connected.name + " cancel the invitation"});
-                }
-                else {
+                if (data.code == 0) {
                     game.askingUser = from;
                     $scope.$apply();
                 }
+                else {
+                    socket.emit('decline', {name: from, msg: connected.name + " cancel the invitation"});
+                }
             }
-            else if (game.waitingToResponse && game.requestAccapted) {
-                console.log('second if');
-
-                game.waitingToResponse = false;
-                game.requestAccapted = false;
-
-                game.opponent = from;
-                game.yourTurn = true;
-                game.inGame = true;
-                $scope.$apply();
-                // start game with x - allow all boards
+            else if (game.waitingToResponse && data.code == 2) {
+                startGame(true, from);
             }
-            else if (game.waitingToResponse && from == game.invitedUser) {
-
-                console.log('third if');
-
-                socket.emit('ask', { to: from, data: false }, function (result, error) {
-                    if (result) {
-                        game.opponent = from;
-                        game.yourTurn = false;
-                        game.inGame = true;
-                        game.waitingToResponse = false;
-                        $scope.$apply();
-                        //start game with o
-                    }
+            else if (game.waitingToResponse && data.code == 1) {
+                socket.emit('ask', { to: from, code: 2 }, function (result, error) {
+                    if (result) startGame(false, from);
                 });
             }
             else {
@@ -185,21 +179,23 @@ angular.module('TicTacToe.game', [])
             var value = data.value;
 
             game.board.board[board.x][board.y].board[cell.x][cell.y].value = value;
-
             game.player = value === 'x' ? 'o' : 'x';
 
             var cell = game.board.board[board.x][board.y].board[cell.x][cell.y];
 
             if (cell.board.getWinner()) {
-                console.log(cell.board.winner);
-                game.board.getWinner() ? alert(game.board.getWinner()) : null;
+                if (game.board.getWinner()){
+                    game.yourTurn = false;
+                    userService.setGameResult(connected, false);
+                    $scope.open(false, game.opponent + ' kicked your butt');
+                }
             }
 
             var allow = !game.board.board[cell.x][cell.y].isFull() && game.board.board[cell.x][cell.y].winner === undefined;
 
             game.board.board.forEach(function (row) {
                 row.forEach(function (col) {
-                    col.isAlowed = !allow && col.winner === undefined;
+                    col.isAlowed = !allow && col.winner === undefined && !col.isFull();
                 });
             });
 
@@ -224,18 +220,24 @@ angular.module('TicTacToe.game', [])
 
             cell.value = game.player;
             game.player = game.player === 'x' ? 'o' : 'x';
-            //GameService.sendPick(cell);
 
             if (cell.board.getWinner()) {
-                console.log(cell.board.winner);
-                game.board.getWinner() ? alert(game.board.getWinner()) : null;
+                if (game.board.getWinner()){
+                    if (game.inGame){
+                        userService.setGameResult(connected, true);
+                        $scope.open(true, 'You kicked his butt');
+                    }
+                    else {
+                        $scope.open(true, game.board.winner + ' won');
+                    }
+                }
             }
 
             var allow = !game.board.board[cell.x][cell.y].isFull() && game.board.board[cell.x][cell.y].winner === undefined;
 
             game.board.board.forEach(function (row) {
                 row.forEach(function (col) {
-                    col.isAlowed = !allow && col.winner === undefined;
+                    col.isAlowed = !allow && col.winner === undefined && !col.isFull();
                 });
             });
 
@@ -255,9 +257,9 @@ angular.module('TicTacToe.game', [])
             }
         };
 
-        $scope.open = function () {
+        $scope.open = function (win, msg) {
 
-            $scope.items = ['item1', 'item2', 'item3'];
+            $scope.items = [win, msg, 'item3'];
 
             var modalInstance = $modal.open({
                 templateUrl: 'templates/endGameMsg.html',
@@ -270,7 +272,10 @@ angular.module('TicTacToe.game', [])
             });
 
             modalInstance.result.then(function (selectedItem) {
-                alert(selectedItem);
+                if (game.opponent == "") {
+                    game.board = new BigBoard();
+                    return;
+                }
 
                 if (game.askingUser === game.opponent){
                     game.acceptInvite();
@@ -279,19 +284,17 @@ angular.module('TicTacToe.game', [])
                     game.sendRequest(game.opponent);
                 }
 
-                game.board = new BigBoard();
+                game.inGame = false;
 
             }, function () {
-                console.log('return');
-
                 if (game.askingUser === game.opponent) {
-                    // decline
                     game.declineRequest(game.opponent);
                 }
 
                 game.opponent = "";
+                game.yourTurn = false;
                 game.inGame = false;
-                game.board = new BigBoard();
+                //game.board = new BigBoard();
             });
         };
     }])
@@ -299,16 +302,16 @@ angular.module('TicTacToe.game', [])
     .controller('ModalInstanceCtrl', function ($scope, $modalInstance, items) {
 
         $scope.items = items;
-        $scope.selected = {
-            item: $scope.items[0]
-        };
+        //$scope.selected = {
+        //    item: $scope.items[0]
+        //};
 
         $scope.ok = function () {
-            $modalInstance.close('hello');
+            $modalInstance.close('restart');
         };
 
         $scope.cancel = function () {
-            $modalInstance.dismiss('cancel');
+            $modalInstance.dismiss('continue');
         };
     });
 
@@ -336,9 +339,12 @@ function SmallBoard(x, y) {
 }
 
 SmallBoard.prototype.isFull = function () {
-    for (var row in this.board) {
-        for (var cell in row)
-            if (cell.value === undefined) return false;
+    for (var i = 0; i < 3; i++) {
+        for (var j = 0; j < 3; j++) {
+            if (!this.board[i][j].value){
+                return false;
+            }
+        }
     }
 
     return true;
@@ -384,12 +390,12 @@ BigBoard.prototype.getWinner = function () {
 
     var that = this;
 
-    if (that.winner) return that.winner;
+    //if (that.winner) return that.winner;
 
     wins.forEach(function (win) {
         if (that.winner) return;
-        if (that.board[win[0][0]][win[0][1]].winner === that.board[win[1][0]][win[1][1].winner] &&
-            that.board[win[0][0]][win[0][1]].winner === that.board[win[2][0]][win[2][1].winner] &&
+        if (that.board[win[0][0]][win[0][1]].winner === that.board[win[1][0]][win[1][1]].winner &&
+            that.board[win[0][0]][win[0][1]].winner === that.board[win[2][0]][win[2][1]].winner &&
             that.board[win[0][0]][win[0][1]].winner != undefined) {
             that.winner = that.board[win[0][0]][win[0][1]].winner;
         }
@@ -397,19 +403,3 @@ BigBoard.prototype.getWinner = function () {
 
     return that.winner;
 };
-
-
-//Square.prototype.fill = function (player) {
-//    this.player = player;
-//};
-//
-//function init() {
-//    var board = [];
-//    for (var i = 0; i < 3; i++) {
-//        for (var j = 0; j < 3; j++) {
-//            board.push(new Cell(i, j));
-//        }
-//    }
-//
-//    return board;
-//}

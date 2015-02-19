@@ -55,7 +55,7 @@ io.sockets.on('connection', function (socket) {
     socket.on('ask', function (data, callback) {
         console.log('New request to ', data.to);
         if (data.to in users) {
-            users[data.to].emit('request', { from: socket.username, code: data.data});
+            users[data.to].emit('request', { from: socket.username, code: data.code});
             callback(true);
         }
         else {

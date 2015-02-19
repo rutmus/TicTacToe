@@ -81,7 +81,7 @@ angular.module('TicTacToe.users', [])
             this.signUserOut();
         };
 
-        drawGraph();
+        //drawGraph();
 
         function drawGraph() {
 
