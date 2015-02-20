@@ -3,7 +3,7 @@
 <head lang="en">
     <meta charset="UTF-8">
 
-    <title></title>
+    <title>Tic Tac Toe</title>
 
     <link rel="stylesheet" href="css/vendor/foundation.min.css"/>
 
@@ -13,6 +13,8 @@
 
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+
+    <link rel="stylesheet" href="css/vendor/nv.d3.min.css"/>
 
 </head>
 <body ng-controller="MainCtrl as main">
@@ -31,30 +33,20 @@
             <li ng-if="$root.loggedUser"><a ui-sref="game">Game</a></li>
             <li ng-if="$root.loggedUser.admin"><a ui-sref="admin.userManager">Admin</a></li>
             <li ng-if="$root.loggedUser"><a ui-sref="user">{{ $root.loggedUser.name }}</a></li>
-            <!--<li ng-if="$root.loggedUser" class="has-dropdown">-->
-                <!--<a href="#">{{ $root.loggedUser.name }}</a>-->
-                <!--<ul class="dropdown">-->
-                    <!--<li><a href="#" ng-click="main.signUserOut()">Sign out</a></li>-->
-                <!--</ul>-->
-            <!--</li>-->
         </ul>
     </section>
-
 </nav>
 
 <section style="height: 95.5%">
 
     <ui-view></ui-view>
 
-    <!--<div class="ct-chart"></div>-->
-
 </section>
 
 
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.8/angular.min.js"></script>
 <script src="js/vendor/angular-ui-router.min.js"></script>
-<script src="js/js/vendor/jquery.js"></script>
-<script src="js/js/foundation.min.js"></script>
+
 <script src="js/vendor/mm-foundation-tpls-0.5.1.js"></script>
 <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
 
@@ -71,8 +63,10 @@
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
 
-<script src="socket.io/socket.io.js"></script>
+<script src="js/vendor/nv.d3.js"></script>
+<script src="js/vendor/angularjs-nvd3-directives.js"></script>
 
+<script src="socket.io/socket.io.js"></script>
 
 
 </body>

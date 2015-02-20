@@ -11,17 +11,26 @@
 </style>
 
 <div class="text-center">
-    <h1>{{$root.loggedUser.name}}</h1>
+    <h1>{{ctrl.user.name}}</h1>
 
     <br>
 
-    <p>Mail: {{$root.loggedUser.mail}}</p>
-    <p>Wins: {{$root.loggedUser.wins}}</p>
-    <p>Losses: {{$root.loggedUser.loses}}</p>
+    <p>Mail: {{ctrl.user.mail}}</p>
+
+    <div ng-show="ctrl.user.data[0].y + ctrl.user.data[1].y > 0" style="width: 600px; margin: 0 auto;">
+        <nvd3-pie-chart
+                data="ctrl.user.data"
+                id="exampleId"
+                width="500"
+                height="500"
+                x="ctrl.xFunction()"
+                y="ctrl.yFunction()"
+                showLabels="true">
+            <svg></svg>
+        </nvd3-pie-chart>
+    </div>
 
     <button ng-click="ctrl.signUserOut()">Sign out</button>
     <button ng-click="ctrl.deleteUser()">Delete account</button>
 
 </div>
-
-<body>
