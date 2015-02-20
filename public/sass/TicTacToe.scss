@@ -24,19 +24,14 @@ $border-style: 1px solid black;
   overflow: hidden;
   margin: 30px auto;
   position: relative;
-//  width: 80%;
   text-align: center;
   display: inline-block;
-
-
 
   .row {
 
   }
 
   .col {
-//    height: $size + 2;
-//    width: $size + 2;
     height: ($size * 2) + 2;
     width: ($size * 2) + 2;
     border: 1px solid black;
@@ -58,8 +53,6 @@ $border-style: 1px solid black;
   }
 
   .boardActive {
-//    height: $size + 4;
-//    width: $size + 4;
     height: ($size * 2) + 4;
     width: ($size * 2) + 4;
     border: 2px solid #00AA00;
@@ -80,8 +73,6 @@ $border-style: 1px solid black;
   }
 
   .mini-col {
-//    height: $size / 3;
-//    width: $size / 3;
     height: $size / 1.5;
     width: $size / 1.5;
     display: inline-block;
@@ -97,22 +88,20 @@ $border-style: 1px solid black;
 //      height: $size;
 //      width: $size;
 //    }
+  }
 
+  .mini-col.mini-col-x {
     &:hover {
       cursor: pointer;
       background-color: $player-1-color;
     }
+  }
 
-    //    &:after {
-    //      left: 0;
-    //      opacity: 0;
-    //      font-size: $size-sm*0.5;
-    //      margin-top: -($size-sm*0.5)/2;
-    //      font-family: "FontAwesome";
-    //      content: $player-1-icon;
-    //      top: 50%;
-    //      width: 100%;
-    //    }
+  .mini-col.mini-col-y {
+    &:hover {
+      cursor: pointer;
+      background-color: $player-2-color;
+    }
   }
 
   .cell-pick-x {
@@ -182,11 +171,6 @@ $border-style: 1px solid black;
     opacity: 0.5;
     pointer-events: none;
   }
-
-  //  .cell-pick-x:after,
-  //  .cell-pick-y:after {
-  //    font-family: "FontAwesome";
-  //  }
 
   .cell-0-0 {
     border-right: $border-style;

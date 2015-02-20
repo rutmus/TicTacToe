@@ -186,7 +186,9 @@ angular.module('TicTacToe.game', [])
             if (cell.board.getWinner()) {
                 if (game.board.getWinner()){
                     game.yourTurn = false;
-                    userService.setGameResult(connected, false);
+                    userService.setGameResult(connected, false, function(user) {
+                        $rootScope.loggedUser = user;
+                    });
                     $scope.open(false, game.opponent + ' kicked your butt');
                 }
             }
@@ -224,7 +226,9 @@ angular.module('TicTacToe.game', [])
             if (cell.board.getWinner()) {
                 if (game.board.getWinner()){
                     if (game.inGame){
-                        userService.setGameResult(connected, true);
+                        userService.setGameResult(connected, true, function(user) {
+                            $rootScope.loggedUser = user;
+                        });
                         $scope.open(true, 'You kicked his butt');
                     }
                     else {
@@ -253,6 +257,7 @@ angular.module('TicTacToe.game', [])
 
                 socket.emit('advance', advance, function (result, error) {
                     game.yourTurn = false;
+                    $scope.$apply();
                 });
             }
         };
