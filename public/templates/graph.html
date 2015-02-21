@@ -19,7 +19,7 @@
     }
 
     .bar:hover {
-        fill: orangered ;
+        fill: orangered;
     }
 
     .x.axis path {
@@ -55,10 +55,28 @@
         left: 0;
     }
 
+    .graph-container {
+        display: inline-block;
+        width: 80%;
+        margin-top: -70px;
+        pointer-events: none;
+    }
+
 </style>
 
-<div class="right">
-    <select ng-options="year as year._id for year in gra.usersPerMonth"
-            ng-model="gra.selectedYear" ng-change="gra.setGraph()" ></select>
+<div>
+    <select style="width: 120px" ng-options="year._id for year in gra.allData"
+            ng-model="gra.selectedYear" ng-change="gra.setGraph()"></select>
+
+    <div class="graph-container">
+        <nvd3-multi-bar-chart
+                data="gra.usersPerMonth"
+                id="exampleId"
+                width="550"
+                height="350"
+                showXAxis="true"
+                showYAxis="true">
+            <svg></svg>
+        </nvd3-multi-bar-chart>
+    </div>
 </div>
-<body>
