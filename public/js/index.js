@@ -1,18 +1,5 @@
 var app = angular.module('tic-tac-toe', ['ui.router', 'TicTacToe.users', 'TicTacToe.game', 'TicTacToe.statistics', 'mm.foundation'])
 
-//
-//window.onbeforeunload = function (event) {
-//
-// var message = 'Sure you want to leave?';
-// if (typeof event == 'undefined') {
-// event = window.event;
-// }
-// if (event) {
-// event.returnValue = message;
-// }
-// return message;
-//};
-
     .config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
         $stateProvider
 
@@ -99,6 +86,19 @@ var app = angular.module('tic-tac-toe', ['ui.router', 'TicTacToe.users', 'TicTac
             remove: function (key) {
                 $window.localStorage.removeItem(key);
             }
+        }
+    }])
+
+    .factory('serverData', [function () {
+        return ({ip: createIP});
+
+        function createIP(data){
+            var address = 'http://localhost:8080';
+            //var address = 'http://192.168.1.16:8080';
+
+            if (data) address += '/' + data;
+
+            return address;
         }
     }])
 

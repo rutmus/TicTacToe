@@ -1,15 +1,15 @@
 angular.module('TicTacToe.users', ['nvd3ChartDirectives'])
 
-    .factory('loginService', ['$http', '$state', '$rootScope', '$localstorage', function ($http, $state, $rootScope, $localstorage) {
+    .factory('loginService', ['$http', '$state', '$rootScope', '$localstorage', 'serverData', function ($http, $state, $rootScope, $localstorage, serverData) {
 
         return ({loginUser: loginUser, saveUser: saveUser});
 
         function loginUser(user, onErrorCallback) {
-            $http.post('http://localhost:8080/checkUser', user).success(successCallback).error(onErrorCallback);
+            $http.post(serverData.ip('checkUser'), user).success(successCallback).error(onErrorCallback);
         }
 
         function saveUser(user, onErrorCallback) {
-            $http.post('http://localhost:8080/createUser', user).success(successCallback).error(onErrorCallback);
+            $http.post(serverData.ip('createUser'), user).success(successCallback).error(onErrorCallback);
         }
 
         function successCallback(user) {
@@ -21,27 +21,27 @@ angular.module('TicTacToe.users', ['nvd3ChartDirectives'])
         }
     }])
 
-    .factory('userService', ['$http', function ($http) {
+    .factory('userService', ['$http', 'serverData', function ($http, serverData) {
 
         return ({getAllUsers: getAllUsers, setGameResult: setGameResult, blockUser: blockUser, deleteUser: deleteUser});
 
         function getAllUsers(successCallback, onErrorCallback) {
-            $http.get('http://localhost:8080/getAllUsers').success(successCallback).error(onErrorCallback);
+            $http.get(serverData.ip('getAllUsers')).success(successCallback).error(onErrorCallback);
         }
 
         function setGameResult(user, win, successCallback, onErrorCallback) {
-            $http.post('http://localhost:8080/setGameResult', {
+            $http.post(serverData.ip('setGameResult'), {
                 name: user.name,
                 win: win
             }).success(successCallback).error(onErrorCallback);
         }
 
         function blockUser(user, successCallback, onErrorCallback) {
-            $http.post('http://localhost:8080/blockUser', user).success(successCallback).error(onErrorCallback);
+            $http.post(serverData.ip('blockUser'), user).success(successCallback).error(onErrorCallback);
         }
 
         function deleteUser(user, successCallback, onErrorCallback) {
-            $http.post('http://localhost:8080/deleteUser', user).success(successCallback).error(onErrorCallback);
+            $http.post(serverData.ip('deleteUser'), user).success(successCallback).error(onErrorCallback);
         }
     }])
 

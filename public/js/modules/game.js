@@ -25,9 +25,10 @@ angular.module('TicTacToe.game', [])
         }
     })
 
-    .controller('GameCtrl', ['$scope', 'GameService', '$localstorage', 'userService', '$modal', '$rootScope', function ($scope, GameService, $localstorage, userService, $modal, $rootScope) {
+    .controller('GameCtrl', ['$scope', 'GameService', '$localstorage', 'userService', '$modal', '$rootScope', 'serverData',
+                function ($scope, GameService, $localstorage, userService, $modal, $rootScope, serverData) {
 
-        var socket = io.connect('http://localhost:8080');
+        var socket = io.connect(serverData.ip());
         var connected = $rootScope.loggedUser;
 
         function closeSocket(){

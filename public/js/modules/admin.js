@@ -1,18 +1,18 @@
 angular.module('TicTacToe.statistics', ['uiGmapgoogle-maps'])
 
-    .factory('dataService', ['$http', function ($http) {
+    .factory('dataService', ['$http', 'serverData', function ($http,serverData) {
 
         return ({getUsersPerCountry: getUsersPerCountry, getUsersPerMonth: getUsersPerMonth});
 
         function getUsersPerCountry(successCallback, onErrorCallback) {
-            $http.get('http://localhost:8080/getUsersPerCountry').success(function(data) {
+            $http.get(serverData.ip('getUsersPerCountry')).success(function(data) {
                 console.log(data);
                 successCallback(data);
             }).error(onErrorCallback);
         }
 
         function getUsersPerMonth(successCallback, onErrorCallback) {
-            $http.get('http://localhost:8080/getUsersPerMonth').success(function(data) {
+            $http.get(serverData.ip('getUsersPerMonth')).success(function(data) {
                 console.log(data);
                 successCallback(data);
             }).error(onErrorCallback);
