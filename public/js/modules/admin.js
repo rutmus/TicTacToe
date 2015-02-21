@@ -31,17 +31,27 @@ angular.module('TicTacToe.statistics', ['uiGmapgoogle-maps', 'nvd3ChartDirective
 
             vm.allData = result;
 
-            vm.selectedYear = result[result.length - 1];
+            vm.years = [];
+
+            result.forEach(function (year) {
+                vm.years.push(year._id);
+            });
+
+            vm.selectedYear = 2015;
         });
         
         vm.setGraph = function () {
+            // Get data by the selected year
             dataService.getUsersPerMonth(function(result){
-                vm.usersPerMonth = [{
-                    key: vm.selectedYear._id,
-                    values: dataForGraph(vm.selectedYear.monthly)
-                }];
 
-                vm.allData = result;
+                result.forEach(function(data) {
+                    if (data._id === vm.selectedYear) {
+                        vm.usersPerMonth = [{
+                            key: vm.selectedYear,
+                            values: dataForGraph(data.monthly)
+                        }];
+                    }
+                });
 
                 $scope.$apply();
             });

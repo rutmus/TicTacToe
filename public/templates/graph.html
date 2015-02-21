@@ -65,7 +65,7 @@
 </style>
 
 <div>
-    <select style="width: 120px" ng-options="year._id for year in gra.allData"
+    <select style="width: 120px" ng-options="year for year in gra.years"
             ng-model="gra.selectedYear" ng-change="gra.setGraph()"></select>
 
     <div class="graph-container">
