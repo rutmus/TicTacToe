@@ -10,7 +10,7 @@ var express = require('express')
 
 server.listen(8080);
 
-mongoose.connect('mongodb://localhost/TicTacToe');
+mongoose.connect('mongodb://db.cs.colman.ac.il/TicTacToe');
 
 var userSchema = mongoose.Schema({
     name: String,

@@ -95,6 +95,7 @@ var app = angular.module('tic-tac-toe', ['ui.router', 'TicTacToe.users', 'TicTac
         function createIP(data){
             var address = 'http://localhost:8080';
             //var address = 'http://192.168.1.16:8080';
+            //var address = 'http://192.168.43.61:8080';
 
             if (data) address += '/' + data;
 

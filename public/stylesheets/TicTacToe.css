@@ -273,3 +273,7 @@ h2 {
   width: 70%;
   margin: 0 auto;
 }
+
+.shadow {
+    text-shadow: 2px 2px #7C7C80;
+}
