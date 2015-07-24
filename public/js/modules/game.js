@@ -34,11 +34,9 @@ angular.module('TicTacToe.game', [])
         function closeSocket(){
             if (game.opponent != ""){
                 userService.setGameResult(connected, false);
-                socket.emit('quit', game.opponent);
             }
 
-            socket.emit('exit', connected.name);
-            //socket.disconnect();
+            socket.emit('exit', game.opponent);
         }
 
         $scope.$on('$destroy', function () {

@@ -75,7 +75,7 @@ io.sockets.on('connection', function (socket) {
             callback(false);
         }
         else {
-            User.findOne(data, function (err, user) {
+            User.findOne({'name' : data.name}, function (err, user){
                 if (user) {
                     socket.username = data.name;
                     users[data.name] = socket;
@@ -96,6 +96,9 @@ io.sockets.on('connection', function (socket) {
     socket.on('exit', function (data) {
         if (!socket.username) return;
 
+        if (data != "" && data in users)
+            users[data].emit('surrender', socket.username + ' surrendered!');
+
         delete users[socket.username];
         console.log(socket.username,' Has Been Disconnected!');
         io.sockets.emit('log',socket.username + ' is now offline');
@@ -107,8 +110,25 @@ io.sockets.on('connection', function (socket) {
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname , 'public')));
 
+
 app.get("/", function(req, res) {
     res.sendFile(__dirname + "/index.html");
+});
+
+app.get("/main", function(req, res) {
+    res.sendFile(__dirname + "/public/index.html");
+});
+app.get("/game", function(req, res) {
+    res.sendFile(__dirname + "/public/index.html");
+});
+app.get("/user", function(req, res) {
+    res.sendFile(__dirname + "/public/index.html");
+});
+app.get("/login", function(req, res) {
+    res.sendFile(__dirname + "/public/index.html");
+});
+app.get("/register", function(req, res) {
+    res.sendFile(__dirname + "/public/index.html");
 });
 
 
